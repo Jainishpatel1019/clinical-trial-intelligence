@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{{ report_title }}</title>
+  <style>
+    /* WeasyPrint-friendly: no external resources */
+    @page {
+      margin: 18mm 16mm;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      line-height: 1.45;
+      color: #2c3e50;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1, h2, h3 {
+      font-family: Georgia, "Times New Roman", serif;
+      color: #1e3a5f;
+      font-weight: 700;
+      margin: 0 0 0.5em 0;
+    }
+
+    h1 {
+      font-size: 26px;
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      font-size: 18px;
+      border-bottom: 2px solid #1e3a5f;
+      padding-bottom: 6px;
+      margin-top: 0;
+    }
+
+    h3 {
+      font-size: 15px;
+      margin-top: 1.25em;
+    }
+
+    p {
+      margin: 0.6em 0;
+    }
+
+    ul, ol {
+      margin: 0.5em 0 0.5em 1.25em;
+      padding-left: 1em;
+    }
+
+    li {
+      margin: 0.35em 0;
+    }
+
+    .header-box {
+      background: linear-gradient(180deg, #1e3a5f 0%, #2a4d75 100%);
+      color: #ffffff;
+      padding: 22px 24px;
+      margin: 0 0 24px 0;
+      border-radius: 2px;
+    }
+
+    .header-box h1 {
+      color: #ffffff;
+      border: none;
+      margin-bottom: 8px;
+    }
+
+    .header-box p {
+      margin: 0;
+      font-size: 12px;
+      opacity: 0.92;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .section {
+      page-break-inside: avoid;
+      margin-bottom: 28px;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 16px 0 20px 0;
+    }
+
+    .metric-card {
+      border: 1px solid #dce4ec;
+      background: #fbfcfd;
+      padding: 14px 12px;
+      text-align: center;
+      border-radius: 2px;
+    }
+
+    .metric-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1e3a5f;
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.2;
+    }
+
+    .metric-label {
+      font-size: 11px;
+      color: #5d6d7e;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-top: 6px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 12px 0;
+    }
+
+    th {
+      background: #1e3a5f;
+      color: #ffffff;
+      font-weight: 600;
+      text-align: left;
+      padding: 8px 10px;
+      border: 1px solid #1e3a5f;
+    }
+
+    td {
+      padding: 7px 10px;
+      border: 1px solid #dce4ec;
+      vertical-align: top;
+    }
+
+    tbody tr:nth-child(odd) {
+      background: #ffffff;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+
+    .positive {
+      color: #27ae60;
+      font-weight: 600;
+    }
+
+    .negative {
+      color: #e74c3c;
+      font-weight: 600;
+    }
+
+    .callout-box {
+      background: #eef2f7;
+      border-left: 4px solid #1e3a5f;
+      padding: 12px 14px;
+      margin: 12px 0;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .report-footer {
+      margin-top: 40px;
+      border-top: 1px solid #ccc;
+      padding-top: 10px;
+      font-size: 10px;
+      color: #666;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header-box">
+    <h1>{{ report_title }}</h1>
+    <p>Condition: {{ condition }} | Generated: {{ generated_date }} | Author: {{ author_name }}</p>
+  </div>
+
+  <!-- EXECUTIVE SUMMARY -->
+  {% if include_executive_summary|default(true) %}
+  <div class="section">
+    <h2>Executive Summary</h2>
+    <ul>
+      {% for finding in executive_summary %}
+      <li>{{ finding }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  <!-- DATA OVERVIEW -->
+  <div class="section">
+    <h2>Data Overview</h2>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-value">{{ total_trials }}</div>
+        <div class="metric-label">Trials Analyzed</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">{{ median_enrollment }}</div>
+        <div class="metric-label">Median Enrollment</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">{{ median_duration_days }} days</div>
+        <div class="metric-label">Median Duration</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">{{ avg_completion_rate }}</div>
+        <div class="metric-label">Avg Completion Rate</div>
+      </div>
+    </div>
+    <table>
+      <thead><tr><th>Phase</th><th>Count</th><th>Avg Enrollment</th><th>Completion Rate</th></tr></thead>
+      <tbody>
+      {% for row in phase_table %}
+      <tr>
+        <td>{{ row.phase }}</td>
+        <td>{{ row.count }}</td>
+        <td>{{ row.avg_enrollment }}</td>
+        <td>{{ row.completion_rate }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- CAUSAL ANALYSIS -->
+  {% if include_causal|default(true) %}
+  <div class="section">
+    <h2>Causal Analysis — Heterogeneous Treatment Effects</h2>
+    <div class="callout-box">
+      Average Treatment Effect (ATE):
+      <strong class="{{ 'positive' if ate_positive else 'negative' }}">{{ ate_formatted }}</strong>
+      (95% CI: {{ ate_ci }})
+    </div>
+    <h3>Subgroup Effects</h3>
+    <table>
+      <thead><tr><th>Age Group</th><th>Condition</th><th>CATE</th><th>95% CI</th><th>N</th><th>Significant</th></tr></thead>
+      <tbody>
+      {% for row in subgroup_table %}
+      <tr>
+        <td>{{ row.age_group }}</td>
+        <td>{{ row.condition }}</td>
+        <td class="{{ 'positive' if row.cate_positive else 'negative' }}">{{ row.cate_formatted }}</td>
+        <td>{{ row.ci_formatted }}</td>
+        <td>{{ row.n_samples }}</td>
+        <td>{{ "✓" if row.significant else "" }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    <h3>Top Effect Drivers</h3>
+    <ol>{% for f in top_features %}<li>{{ f }}</li>{% endfor %}</ol>
+  </div>
+  {% endif %}
+
+  <!-- SIMULATION RESULTS -->
+  {% if include_simulation|default(true) %}
+  <div class="section">
+    <h2>Adaptive Trial Simulation</h2>
+    <table>
+      <thead><tr><th>Metric</th><th>Traditional</th><th>Adaptive</th><th>Improvement</th></tr></thead>
+      <tbody>
+      {% for row in simulation_table %}
+      <tr>
+        <td>{{ row.metric }}</td>
+        <td>{{ row.traditional }}</td>
+        <td>{{ row.adaptive }}</td>
+        <td class="{{ 'positive' if row.improved else '' }}">{{ row.improvement }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+
+  <!-- AI INSIGHTS -->
+  {% if include_ai_insights|default(true) %}
+  <div class="section">
+    <h2>AI-Generated Insights</h2>
+    {% for insight in ai_insights %}
+    <div class="callout-box">{{ insight }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- METHODOLOGY -->
+  {% if include_methodology|default(true) %}
+  <div class="section">
+    <h2>Methodology</h2>
+    <p><strong>Causal Inference:</strong> EconML CausalForestDML with gradient boosting nuisance models.
+    Treatment: randomization status. Outcome: {{ outcome_variable }}.
+    Confounders: trial duration, start year.</p>
+    <p><strong>Adaptive Simulation:</strong> Thompson Sampling bandit with Beta-Bernoulli conjugate updates.
+    {{ n_simulations }} Monte Carlo replications.</p>
+    <p><strong>RAG Pipeline:</strong> FAISS IndexFlatIP with sentence-transformers (all-MiniLM-L6-v2) embeddings.
+    Claude API for answer synthesis.</p>
+    <p><strong>Data Source:</strong> ClinicalTrials.gov public database ({{ total_trials }} trials analyzed).</p>
+  </div>
+  {% endif %}
+
+  <!-- FOOTER -->
+  <div class="report-footer">
+    Generated by Clinical Trial Intelligence Platform | Data: ClinicalTrials.gov |
+    Analysis: EconML {{ econml_version }} | Report date: {{ generated_date }}
+  </div>
+
+</body>
+</html>

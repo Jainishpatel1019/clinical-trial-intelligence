@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+  app:
+    build: .
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./data:/app/data
+    # No env_file required: copy .env.example → .env for secrets, or rely on defaults.
+    environment:
+      DEMO_MODE: ${DEMO_MODE:-true}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+    restart: unless-stopped
+
+# To run: docker-compose up --build
+# Then open: http://localhost:8501

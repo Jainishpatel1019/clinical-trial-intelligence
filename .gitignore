@@ -1,0 +1,15 @@
+.env
+__pycache__
+*.pyc
+*.pyo
+.DS_Store
+venv/
+.venv/
+data/raw/*
+data/processed/*
+# Keep demo dataset in git so Hugging Face / fresh clones have trial rows.
+!data/processed/demo_trials.csv
+*.duckdb
+mlruns/
+.pytest_cache/
+*.egg-info/

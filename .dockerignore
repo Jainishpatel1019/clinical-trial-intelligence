@@ -1,0 +1,16 @@
+.env
+.git
+.gitignore
+__pycache__
+*.pyc
+*.pyo
+venv/
+.venv/
+data/raw/
+mlruns/
+.pytest_cache/
+notebooks/
+*.egg-info/
+.DS_Store
+README.md
+tests/
