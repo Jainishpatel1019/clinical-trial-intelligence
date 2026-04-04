@@ -261,17 +261,44 @@ class ReportGenerator:
         """Render the PDF HTML shell with the given context."""
         return self.template.render(**data)
 
-    def generate_pdf(self, data: dict[str, Any]) -> bytes:
-        """Render context to HTML and convert to PDF bytes via WeasyPrint."""
-        html_string = self.render_html(data)
-        try:
-            from weasyprint import HTML
+    def generate_pdf(self, data: dict[str, Any]) -> tuple[bytes, str]:
+        """Render HTML and convert to PDF bytes.
 
-            return HTML(string=html_string).write_pdf()
+        Tries three backends in order:
+          1. WeasyPrint  — pure Python, best output
+          2. pdfkit      — requires wkhtmltopdf system binary
+          3. HTML bytes  — fallback; caller should offer .html download
+
+        Returns (content_bytes, format) where format is "pdf" or "html".
+        """
+        html_string = self.render_html(data)
+
+        # ── Try 1: WeasyPrint ─────────────────────────────────
+        try:
+            from weasyprint import HTML as WeasyprintHTML
+
+            pdf_bytes = WeasyprintHTML(string=html_string).write_pdf()
+            logger.info("PDF generated via WeasyPrint (%d bytes)", len(pdf_bytes))
+            return pdf_bytes, "pdf"
         except ImportError:
-            raise ImportError(
-                "WeasyPrint not installed. Run: pip install weasyprint"
-            ) from None
-        except Exception as e:
-            logger.error("PDF generation failed: %s", e)
-            raise
+            logger.info("WeasyPrint not available, trying pdfkit…")
+        except Exception as exc:
+            logger.warning("WeasyPrint failed (%s), trying pdfkit…", exc)
+
+        # ── Try 2: pdfkit (needs wkhtmltopdf binary) ──────────
+        try:
+            import pdfkit
+
+            pdf_bytes = pdfkit.from_string(html_string, False)
+            logger.info("PDF generated via pdfkit (%d bytes)", len(pdf_bytes))
+            return pdf_bytes, "pdf"
+        except ImportError:
+            logger.info("pdfkit not available, falling back to HTML.")
+        except OSError:
+            logger.info("wkhtmltopdf binary not found, falling back to HTML.")
+        except Exception as exc:
+            logger.warning("pdfkit failed (%s), falling back to HTML.", exc)
+
+        # ── Try 3: Return raw HTML bytes ──────────────────────
+        logger.info("Returning HTML bytes as final fallback.")
+        return html_string.encode("utf-8"), "html"

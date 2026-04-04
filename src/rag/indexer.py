@@ -172,6 +172,7 @@ Completion Rate: {cr_fmt}"""
                     "score": float(score),
                 }
             )
+        results.sort(key=lambda r: r["score"], reverse=True)
         return results
 
     def index_exists(self) -> bool:

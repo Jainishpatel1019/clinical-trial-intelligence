@@ -37,6 +37,12 @@ check(
     bool(key and key != "your_anthropic_api_key_here"),
     "Add your key to .env (optional — app works in demo mode without it)",
 )
+gkey = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+check(
+    "GEMINI_API_KEY or GOOGLE_API_KEY set",
+    bool(gkey and gkey not in ("your_gemini_api_key_here", "your_google_api_key_here")),
+    "Add Gemini key to .env (optional — RAG uses Gemini before Claude when set)",
+)
 
 print("\nDATA:")
 check(

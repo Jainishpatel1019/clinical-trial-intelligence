@@ -242,7 +242,9 @@ class TrialIngestor:
                 payload = resp.json()
             except Exception as exc:
                 self.logger.error("ClinicalTrials.gov request failed: %s", exc)
-                return pd.DataFrame(columns=_RAW_COLUMNS)
+                raise RuntimeError(
+                    f"ClinicalTrials.gov API request failed for '{condition}': {exc}"
+                ) from exc
 
             studies = payload.get("studies") or []
             for study in studies:
@@ -407,10 +409,41 @@ class TrialIngestor:
         except duckdb.BinderException as exc:
             if "PRIMARY KEY" not in str(exc) and "UNIQUE" not in str(exc):
                 raise
-            self.conn.execute("DELETE FROM trials")
+            self.conn.execute(
+                "DELETE FROM trials WHERE nct_id IN (SELECT nct_id FROM _ingest_trials_df)"
+            )
             self.conn.execute(insert_sql.format(replace=""))
         finally:
             self.conn.unregister("_ingest_trials_df")
+
+    def ingest_live(
+        self, conditions: list[str], max_per_condition: int = 200
+    ) -> dict[str, Any]:
+        """Always fetch from the real ClinicalTrials.gov API (ignores DEMO_MODE)."""
+        initialize_schema(self.conn)
+        errors: list[str] = []
+        total_ingested = 0
+        by_condition: dict[str, int] = {}
+        for cond in conditions:
+            try:
+                raw = self.fetch_trials(cond, max_per_condition)
+                if raw.empty:
+                    by_condition[cond] = 0
+                    continue
+                parsed = self.parse_raw(raw)
+                cleaned = self.validator.clean(parsed)
+                self._upsert_trials(cleaned)
+                by_condition[cond] = int(len(cleaned))
+                total_ingested += int(len(cleaned))
+            except Exception as exc:
+                self.logger.exception("Live ingest failed for %r", cond)
+                errors.append(f"{cond}: {exc}")
+                by_condition[cond] = 0
+        return {
+            "total_ingested": total_ingested,
+            "by_condition": by_condition,
+            "errors": errors,
+        }
 
     def ingest(
         self, conditions: list[str], max_per_condition: int = 200

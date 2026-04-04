@@ -63,9 +63,13 @@ class TrialValidator:
                 "error_message": "completion_rate must be between 0 and 1",
             },
             {
-                "name": "dates_not_null",
-                "check": lambda df: df["start_date"].notna().all(),
-                "error_message": "start_date has null values",
+                "name": "dates_mostly_present",
+                "check": lambda df: (
+                    df["start_date"].notna().mean() >= 0.80
+                    if "start_date" in df.columns
+                    else True
+                ),
+                "error_message": "start_date is missing in more than 20% of rows",
             },
         ]
 

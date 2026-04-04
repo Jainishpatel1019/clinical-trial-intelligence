@@ -1,129 +1,162 @@
-"""Streamlit entrypoint for the Clinical Trial Intelligence application."""
+"""Streamlit entrypoint — landing page."""
+
+import os
+import sys
+from pathlib import Path
 
 import streamlit as st
-import sys, os
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+try:
+    from dotenv import load_dotenv
+    load_dotenv(Path(__file__).resolve().parent.parent / ".env", override=True)
+except ImportError:
+    pass
+
+from app.theme import inject_theme
 from src.data.schema import get_connection, get_table_stats
 
 st.set_page_config(
-    page_title="Clinical Trial Intelligence Platform",
+    page_title="Clinical Trial Intelligence",
     page_icon="🧬",
     layout="wide",
     initial_sidebar_state="expanded",
 )
+inject_theme()
 
-st.markdown(
-    """
-<style>
-    .main .block-container { padding-top: 2rem; }
-    .stMetric { background: #f8f9fa; border-radius: 8px; padding: 16px; border-left: 4px solid #1e3a5f; }
-    div[data-testid="metric-container"] { background: #f8f9fa; border-radius: 8px; padding: 12px; border-left: 3px solid #1e3a5f; }
-    .hero-title { font-size: 2.5rem; font-weight: 700; color: #1e3a5f; margin-bottom: 0.5rem; }
-    .hero-sub { font-size: 1.1rem; color: #555; margin-bottom: 1.5rem; }
-    .tech-badge { display: inline-block; background: #e8f0fe; color: #1e3a5f; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; margin: 3px; font-weight: 500; }
-    footer { visibility: hidden; }
-</style>
-""",
-    unsafe_allow_html=True,
-)
-
-defaults = {
-    "messages": [],
-    "hte_model": None,
-    "hte_results": None,
-    "sim_results": None,
-    "subgroup_df": None,
-    "pending_question": None,
-}
-for key, val in defaults.items():
+for key, val in {"messages": [], "pending_question": None}.items():
     if key not in st.session_state:
         st.session_state[key] = val
 
-st.markdown(
-    '<div class="hero-title">🧬 Clinical Trial Intelligence Platform</div>',
-    unsafe_allow_html=True,
-)
-st.markdown(
-    '<div class="hero-sub">End-to-end causal inference, adaptive simulation, and GenAI-powered insights on public clinical trial data</div>',
-    unsafe_allow_html=True,
-)
-
-badges = [
-    "Python 3.11",
-    "EconML Causal Forest",
-    "Bayesian Simulation",
-    "RAG + Claude API",
-    "DuckDB",
-    "FAISS",
-    "Streamlit",
+# ── Hero with floating dots ───────────────────────────────────
+_DOT_SPECS = [
+    (10,  5,  4, 9,  0.0), (18, 20,  6, 11, 1.2), (30, 45,  8, 13, 0.4),
+    (45, 70,  4, 10, 2.1), (60, 88,  6, 12, 0.8), (75, 15,  8, 14, 1.5),
+    (85, 35,  4,  9, 0.3), (12, 60,  6, 11, 1.9), (50, 80, 10, 13, 0.6),
+    (22, 92,  4, 10, 2.4), (68, 50,  6, 12, 1.1), (38, 10,  8,  8, 0.2),
+    (80, 75,  4, 14, 1.7), (55, 28,  6,  9, 2.8), (25, 48, 10, 11, 0.9),
+    (42, 90,  4, 13, 1.4), (72, 62,  8, 10, 2.2), (15, 82,  6, 12, 0.5),
+    (90, 22,  4,  9, 1.8), (35, 72,  6, 14, 3.0),
 ]
-badge_html = " ".join([f'<span class="tech-badge">{b}</span>' for b in badges])
-st.markdown(badge_html, unsafe_allow_html=True)
-st.divider()
 
+_dot_divs = "\n".join(
+    f'<div class="float-dot" style="top:{t}%;left:{l}%;'
+    f'width:{s}px;height:{s}px;'
+    f'animation-duration:{d}s;animation-delay:{delay}s;"></div>'
+    for t, l, s, d, delay in _DOT_SPECS
+)
+
+st.markdown(
+    f"""
+    <div class="cti-hero-wrap">
+        {_dot_divs}
+        <div class="cti-hero-content cti-hero">
+            <div class="cti-hero-eyebrow">Clinical Trial Intelligence</div>
+            <div class="cti-hero-title">
+                Find out which treatments<br>
+                <span class="cti-accent">actually work — and for whom</span>
+            </div>
+            <p class="cti-hero-sub">
+                Every year, thousands of clinical trials test new treatments for
+                diseases like cancer, diabetes, and heart failure.
+                This platform helps you explore that data, discover which patient
+                groups benefit most, and get instant answers — all in plain English.
+            </p>
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+# ── Live stats ────────────────────────────────────────────────
 conn = None
 try:
     conn = get_connection()
     stats = get_table_stats(conn)
-    cols = st.columns(4)
-    cols[0].metric("Trials in Database", f"{stats['total_trials']:,}")
-    cols[1].metric("Conditions", str(len(stats["conditions"])))
-    dr = stats.get("date_range") or {}
-    cols[2].metric(
-        "Date Range",
-        f"{dr.get('min', '—')} – {dr.get('max', '—')}",
-    )
-    lu = stats.get("last_updated") or ""
-    cols[3].metric("Last Updated", lu if lu else "Unknown")
+    total = stats["total_trials"]
+    n_cond = len(stats["conditions"])
+
+    cols = st.columns(3)
+    cols[0].metric("Trials in Database", f"{total:,}")
+    cols[1].metric("Diseases Covered", str(n_cond))
+    cols[2].metric("Data Source", "ClinicalTrials.gov")
 except Exception:
-    st.info(
-        "📂 No data loaded yet. Demo data will auto-load when you visit the Data Explorer page."
-    )
+    st.info("No data loaded yet. Visit **Data Explorer** in the sidebar to get started.")
 finally:
     if conn is not None:
         conn.close()
 
-st.subheader("How It Works")
+# ── How it works ──────────────────────────────────────────────
+st.markdown(
+    """
+    <div class="cti-how">
+        <div class="cti-how-step">
+            <div class="cti-how-num">01</div>
+            <div class="cti-how-title">Explore</div>
+            <div class="cti-how-desc">Browse thousands of clinical trials filtered by disease, phase, and size</div>
+        </div>
+        <div class="cti-how-step">
+            <div class="cti-how-num">02</div>
+            <div class="cti-how-title">Discover</div>
+            <div class="cti-how-desc">Our AI finds which patient groups benefit most from each treatment</div>
+        </div>
+        <div class="cti-how-step">
+            <div class="cti-how-num">03</div>
+            <div class="cti-how-title">Act</div>
+            <div class="cti-how-desc">Download a PDF report with findings ready to share with your team</div>
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+# ── What you can do ───────────────────────────────────────────
+st.markdown('<div class="cti-section-label">What you can do</div>', unsafe_allow_html=True)
+
 steps = [
     (
-        "1️⃣",
-        "Load Data",
-        "Pull trials from ClinicalTrials.gov API or use 300 pre-loaded demo trials",
+        "📊", "Explore Trials",
+        "Browse thousands of real clinical trials. Filter by disease, "
+        "trial phase, or status. See how big they are and how long they take."
     ),
     (
-        "2️⃣",
-        "Causal Analysis",
-        "EconML Causal Forest estimates treatment effects across patient subgroups",
+        "🔬", "Who Benefits Most?",
+        "Our AI finds which patient groups — by age, disease, trial size — "
+        "get the biggest benefit from a treatment. Not averages. Specifics."
     ),
     (
-        "3️⃣",
-        "Simulate Trials",
-        "Thompson Sampling shows how adaptive allocation beats fixed designs",
+        "🎲", "Smarter Trial Design",
+        "See what happens when you stop giving patients the losing treatment "
+        "early. Our simulator shows how many people you can save."
     ),
     (
-        "4️⃣",
-        "Ask Questions",
-        "RAG pipeline answers natural language questions grounded in trial data",
+        "💬", "Ask Anything",
+        'Type a question like "Which cancer trials had the best results?" '
+        "and get an answer backed by real data — with sources cited."
     ),
     (
-        "5️⃣",
-        "Generate Report",
-        "One-click PDF brief with all findings, ready to share",
+        "🗺️", "Global View",
+        "See where trials happen around the world on an interactive 3D globe. "
+        "Zoom, rotate, and explore by disease or region."
     ),
 ]
+
 cols = st.columns(5)
 for col, (icon, title, desc) in zip(cols, steps):
-    col.markdown(f"### {icon} {title}")
-    col.caption(desc)
+    col.markdown(
+        f'<div class="cti-step-col"><div class="cti-step-card">'
+        f'<span class="step-icon">{icon}</span>'
+        f'<h3>{title}</h3>'
+        f'<p>{desc}</p>'
+        f'</div></div>',
+        unsafe_allow_html=True,
+    )
 
-st.sidebar.markdown("## 🧬 Trial Intelligence")
-st.sidebar.markdown("Navigate using the pages above.")
-st.sidebar.divider()
-demo_mode = os.getenv("DEMO_MODE", "true").lower() == "true"
-if demo_mode:
-    st.sidebar.info("📊 Demo Mode: Using 300 synthetic trials")
-else:
-    st.sidebar.success("🌐 Live Mode: ClinicalTrials.gov API")
-st.sidebar.divider()
-st.sidebar.markdown("[GitHub](https://github.com) | [HuggingFace](https://huggingface.co)")
+# ── Sidebar ───────────────────────────────────────────────────
+with st.sidebar:
+    st.markdown(
+        '<div style="font-family: Playfair Display, serif; font-size: 1.3rem; '
+        'font-weight: 500; color: #1A1816; margin-bottom: 0.25rem;">🧬 Trial Intelligence</div>',
+        unsafe_allow_html=True,
+    )
+    st.caption("Select a page above to get started.")

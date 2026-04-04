@@ -2,8 +2,7 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# System dependencies for WeasyPrint and general use
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     libpango-1.0-0 \
     libpangocairo-1.0-0 \
     libcairo2 \
@@ -23,13 +22,18 @@ COPY . .
 
 RUN mkdir -p data/raw data/processed data/faiss_index
 
+# Generate demo data so the app works without live API
+RUN python scripts/generate_demo_data.py
+
+# HuggingFace Spaces uses port 7860; local Docker uses 8501.
+# The CMD picks the right port based on SPACE_ID env (set automatically by HF).
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD curl -f http://localhost:8501/_stcore/health || exit 1
+    CMD curl -f http://localhost:${PORT:-7860}/_stcore/health || exit 1
 
-EXPOSE 8501
+EXPOSE 7860 8501
 
-CMD ["streamlit", "run", "app/main.py", \
-     "--server.port=8501", \
-     "--server.address=0.0.0.0", \
-     "--server.headless=true", \
-     "--browser.gatherUsageStats=false"]
+CMD ["sh", "-c", "streamlit run app/main.py \
+    --server.port=${PORT:-7860} \
+    --server.address=0.0.0.0 \
+    --server.headless=true \
+    --browser.gatherUsageStats=false"]

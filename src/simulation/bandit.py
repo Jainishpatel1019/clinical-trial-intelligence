@@ -195,6 +195,7 @@ class AdaptiveTrialSimulator:
         fig = go.Figure()
         for i, col in enumerate(pct_cols):
             arm_idx = int(col.split("_")[1])
+            arm_label = arm_idx + 1  # match UI sliders "Arm 1, Arm 2, ..."
             fig.add_trace(
                 go.Scatter(
                     x=history_df["enrolled_so_far"],
@@ -202,7 +203,7 @@ class AdaptiveTrialSimulator:
                     mode="lines",
                     stackgroup="one",
                     name=(
-                        f"Arm {arm_idx} "
+                        f"Arm {arm_label} "
                         f"(true effect: {self.true_effects[arm_idx]:.0%})"
                     ),
                     fillcolor=colors[i],

@@ -10,6 +10,9 @@ services:
     environment:
       DEMO_MODE: ${DEMO_MODE:-true}
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-2.5-flash}
     restart: unless-stopped
 
 # To run: docker-compose up --build

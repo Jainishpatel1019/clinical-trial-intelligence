@@ -9,39 +9,39 @@ import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 from src.data.schema import get_connection
 from src.reporting.generator import ReportGenerator
+from app.theme import inject_theme
 
 st.set_page_config(page_title="Report Generator", page_icon="📄", layout="wide")
+inject_theme()
 
-st.title("📄 Insight Report Generator")
-st.markdown(
-    "Auto-generate a **PDF brief** from your causal analysis and simulation results."
-)
 
-st.subheader("Prerequisites")
-checks = {
-    "Trial data loaded": True,
-    "Causal model fitted": "hte_results" in st.session_state,
-    "Simulation run": "sim_results" in st.session_state,
-}
-for label, ok in checks.items():
-    if ok:
-        st.success(f"✅ {label}")
-    else:
-        if label == "Causal model fitted":
-            st.warning(
-                f"⚠️ **{label}** — Open **Causal Analysis** in the sidebar, "
-                "configure filters, and click **Run Causal Analysis**."
-            )
-        elif label == "Simulation run":
-            st.warning(
-                f"⚠️ **{label}** — Open **Trial Simulator** in the sidebar "
-                "and click **Run Simulation**."
-            )
+def _report_hte_ready() -> bool:
+    r = st.session_state.get("hte_results")
+    return isinstance(r, dict) and bool(r)
+
+
+def _report_sim_ready() -> bool:
+    r = st.session_state.get("sim_results")
+    return isinstance(r, dict) and "trad" in r and "adapt" in r
+
+
+st.markdown('<div class="cti-section-label">Reports</div>', unsafe_allow_html=True)
+st.title("📄 Download Your Findings")
+st.caption("Generate a PDF report with all your analysis results — ready to share with your team.")
+
+with st.expander("Checklist — what do you need before generating?", expanded=False):
+    checks = {
+        "Trial data loaded": True,
+        "Analysis complete": _report_hte_ready(),
+        "Simulation complete": _report_sim_ready(),
+    }
+    for label, ok in checks.items():
+        if ok:
+            st.success(f"✅ {label}")
         else:
-            st.warning(f"⚠️ **{label}**")
+            st.info(f"⬜ {label} — complete this step first")
 
-st.divider()
-st.subheader("Report configuration")
+st.markdown('<div class="cti-section-label">Configure</div>', unsafe_allow_html=True)
 col_l, col_r = st.columns(2)
 with col_l:
     report_title = st.text_input(
@@ -65,8 +65,13 @@ with col_r:
     n_insights = st.slider("Number of AI insights to include", 1, 5, 3)
 
 gen_button = st.button(
-    "⚡ Generate PDF Report", type="primary", use_container_width=True
+    "⚡ Generate Report", type="primary", use_container_width=True
 )
+
+with st.expander("Enable direct PDF generation"):
+    st.markdown("If you see an HTML fallback, install WeasyPrint in your terminal:")
+    st.code("pip install weasyprint", language="bash")
+    st.caption("Run this in your terminal to enable direct PDF generation")
 
 
 @contextmanager
@@ -161,35 +166,30 @@ if gen_button:
         st.write("🖨️ Rendering HTML template...")
 
         try:
-            st.write("📄 Converting to PDF...")
-            pdf_bytes = generator.generate_pdf(data)
+            st.write("📄 Converting to PDF…")
+            content_bytes, fmt = generator.generate_pdf(data)
             if status is not None:
                 status.update(label="✅ Report ready!", state="complete")
 
-            st.success("Report generated successfully!")
-            filename = (
-                f"trial_intelligence_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
-            )
-            st.session_state["last_pdf_bytes"] = pdf_bytes
-            st.session_state["last_pdf_name"] = filename
+            ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+            if fmt == "pdf":
+                st.success("PDF generated successfully!")
+                filename = f"trial_intelligence_report_{ts}.pdf"
+                st.session_state["last_report_bytes"] = content_bytes
+                st.session_state["last_report_name"] = filename
+                st.session_state["last_report_fmt"] = "pdf"
+            else:
+                st.info(
+                    "Downloaded as HTML — open in Chrome and use "
+                    "**File → Print → Save as PDF** for a PDF version."
+                )
+                filename = f"trial_intelligence_report_{ts}.html"
+                st.session_state["last_report_bytes"] = content_bytes
+                st.session_state["last_report_name"] = filename
+                st.session_state["last_report_fmt"] = "html"
+
             st.session_state["last_report_html"] = generator.render_html(data)
 
-        except ImportError:
-            if status is not None:
-                status.update(label="WeasyPrint not available", state="error")
-            st.warning(
-                "PDF generation requires WeasyPrint. Install it with: `pip install weasyprint`"
-            )
-            st.markdown("**HTML Preview (download as HTML instead):**")
-            html_string = generator.render_html(data)
-            st.session_state["last_report_html"] = html_string
-            st.download_button(
-                "⬇️ Download HTML Report",
-                html_string,
-                f"report_{datetime.now().strftime('%Y%m%d')}.html",
-                "text/html",
-                use_container_width=True,
-            )
         except Exception as e:
             if status is not None:
                 status.update(label="Error", state="error")
@@ -197,19 +197,27 @@ if gen_button:
             with st.expander("Error details"):
                 st.exception(e)
 
-if st.session_state.get("last_pdf_bytes"):
+if st.session_state.get("last_report_bytes"):
+    _fmt = st.session_state.get("last_report_fmt", "pdf")
+    _mime = "application/pdf" if _fmt == "pdf" else "text/html"
+    _label = "⬇️ Download PDF Report" if _fmt == "pdf" else "⬇️ Download HTML Report"
     st.download_button(
-        label="⬇️ Download PDF Report",
-        data=st.session_state["last_pdf_bytes"],
+        label=_label,
+        data=st.session_state["last_report_bytes"],
         file_name=st.session_state.get(
-            "last_pdf_name",
+            "last_report_name",
             "trial_intelligence_report.pdf",
         ),
-        mime="application/pdf",
+        mime=_mime,
         type="primary",
         use_container_width=True,
-        key="dl_pdf_persistent",
+        key="dl_report_persistent",
     )
+    if _fmt == "html":
+        st.info(
+            "Downloaded as HTML — open in Chrome and use "
+            "**File → Print → Save as PDF** for a PDF version."
+        )
 
 with st.expander("📋 Report sections preview"):
     st.markdown(

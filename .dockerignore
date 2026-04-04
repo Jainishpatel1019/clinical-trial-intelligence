@@ -13,4 +13,3 @@ notebooks/
 *.egg-info/
 .DS_Store
 README.md
-tests/
