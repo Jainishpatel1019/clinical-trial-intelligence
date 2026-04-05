@@ -79,46 +79,35 @@ p, li, span, label {
 }
 
 /* Buttons */
-.stButton > button {
+.stButton > button,
+.stDownloadButton > button,
+.stFormSubmitButton > button {
     border-radius: 999px !important;
-    font-weight: 500 !important;
+    font-weight: 600 !important;
     font-size: 0.875rem !important;
     padding: 0.5rem 1.5rem !important;
     transition: all 0.2s ease !important;
-    border: 1px solid rgba(0,0,0,0.08) !important;
     letter-spacing: 0.01em;
-}
-.stButton > button[kind="primary"] {
     background: #1A5276 !important;
     border: none !important;
-    color: #fff !important;
+    color: #FFFFFF !important;
     box-shadow: 0 2px 8px rgba(26, 82, 118, 0.2) !important;
 }
-.stButton > button[kind="primary"]:hover {
+.stButton > button:hover,
+.stDownloadButton > button:hover,
+.stFormSubmitButton > button:hover {
     background: #154360 !important;
     box-shadow: 0 4px 16px rgba(26, 82, 118, 0.25) !important;
     transform: translateY(-1px) !important;
+    color: #FFFFFF !important;
 }
-.stButton > button[kind="secondary"],
-.stButton > button:not([kind]) {
-    background: #FFFFFF !important;
-    color: #1C1C1C !important;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04) !important;
-}
-.stButton > button[kind="secondary"]:hover,
-.stButton > button:not([kind]):hover {
-    background: #F3F2EE !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06) !important;
-    transform: translateY(-1px) !important;
-}
-
-/* Download buttons */
-.stDownloadButton > button {
-    background: #1A5276 !important;
-    border: none !important;
-    color: #fff !important;
-    border-radius: 999px !important;
-    box-shadow: 0 2px 8px rgba(26, 82, 118, 0.2) !important;
+.stButton > button p,
+.stDownloadButton > button p,
+.stFormSubmitButton > button p,
+.stButton > button span,
+.stDownloadButton > button span,
+.stFormSubmitButton > button span {
+    color: #FFFFFF !important;
 }
 
 /* Metric cards */
