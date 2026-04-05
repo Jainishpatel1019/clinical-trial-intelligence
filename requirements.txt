@@ -1,3 +1,6 @@
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch
+
 streamlit>=1.32
 python-dotenv>=1.0
 pydantic>=2.6
