@@ -219,12 +219,12 @@ fig.update_layout(
     font=dict(color="#E8E4DD", size=12),
     legend=dict(
         x=0.02, y=0.98,
-        bgcolor="rgba(28,28,28,0.85)",
-        bordercolor="rgba(255,255,255,0.08)",
+        bgcolor="rgba(28,28,28,0.92)",
+        bordercolor="rgba(255,255,255,0.15)",
         borderwidth=1,
-        font=dict(size=12, color="#E8E4DD"),
+        font=dict(size=12, color="#FFFFFF"),
         itemsizing="constant",
-        title=dict(text="Region", font=dict(size=11, color="#ABABAB")),
+        title=dict(text="Region", font=dict(size=11, color="#FFFFFF")),
     ),
     dragmode="pan",
 )
@@ -234,7 +234,7 @@ fig.add_trace(go.Scattergeo(
     lon=[-100, 15, 25, 45, 100],
     mode="text",
     text=["North America", "Europe", "Africa", "Middle East", "Asia Pacific"],
-    textfont=dict(size=10, color="rgba(255,255,255,0.35)", family="Inter"),
+    textfont=dict(size=11, color="#FFFFFF", family="Inter"),
     showlegend=False,
     hoverinfo="none",
 ))
