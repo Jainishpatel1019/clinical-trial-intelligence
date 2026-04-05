@@ -262,43 +262,163 @@ class ReportGenerator:
         return self.template.render(**data)
 
     def generate_pdf(self, data: dict[str, Any]) -> tuple[bytes, str]:
-        """Render HTML and convert to PDF bytes.
+        """Build a PDF directly using fpdf2 (pure Python, no system deps).
 
-        Tries three backends in order:
-          1. WeasyPrint (pure Python, best output)
-          2. pdfkit (requires wkhtmltopdf system binary)
-          3. HTML bytes (fallback; caller should offer .html download)
-
-        Returns (content_bytes, format) where format is "pdf" or "html".
+        Returns (pdf_bytes, "pdf") on success, or (html_bytes, "html") as fallback.
         """
-        html_string = self.render_html(data)
-
-        # Try WeasyPrint first
         try:
-            from weasyprint import HTML as WeasyprintHTML
-
-            pdf_bytes = WeasyprintHTML(string=html_string).write_pdf()
-            logger.info("PDF generated via WeasyPrint (%d bytes)", len(pdf_bytes))
-            return pdf_bytes, "pdf"
-        except ImportError:
-            logger.info("WeasyPrint not available, trying pdfkit…")
+            return self._build_pdf(data), "pdf"
         except Exception as exc:
-            logger.warning("WeasyPrint failed (%s), trying pdfkit…", exc)
+            logger.warning("PDF generation failed (%s), falling back to HTML.", exc)
+            return self.render_html(data).encode("utf-8"), "html"
 
-        # Fall back to pdfkit
-        try:
-            import pdfkit
+    def _build_pdf(self, data: dict[str, Any]) -> bytes:
+        from fpdf import FPDF
 
-            pdf_bytes = pdfkit.from_string(html_string, False)
-            logger.info("PDF generated via pdfkit (%d bytes)", len(pdf_bytes))
-            return pdf_bytes, "pdf"
-        except ImportError:
-            logger.info("pdfkit not available, falling back to HTML.")
-        except OSError:
-            logger.info("wkhtmltopdf binary not found, falling back to HTML.")
-        except Exception as exc:
-            logger.warning("pdfkit failed (%s), falling back to HTML.", exc)
+        pdf = FPDF(orientation="P", unit="mm", format="A4")
+        pdf.set_auto_page_break(auto=True, margin=20)
+        pdf.add_page()
 
-        # Last resort: return raw HTML
-        logger.info("Returning HTML bytes as final fallback.")
-        return html_string.encode("utf-8"), "html"
+        accent = (198, 106, 62)
+        dark = (45, 42, 38)
+        gray = (120, 120, 120)
+        light_bg = (247, 245, 240)
+
+        def heading(text: str, size: int = 16) -> None:
+            pdf.set_font("Helvetica", "B", size)
+            pdf.set_text_color(*accent)
+            pdf.cell(0, 10, text, new_x="LMARGIN", new_y="NEXT")
+            pdf.set_draw_color(*accent)
+            pdf.line(pdf.l_margin, pdf.get_y(), pdf.w - pdf.r_margin, pdf.get_y())
+            pdf.ln(4)
+
+        def body(text: str, size: int = 10) -> None:
+            pdf.set_font("Helvetica", "", size)
+            pdf.set_text_color(*dark)
+            pdf.multi_cell(0, 5.5, text, new_x="LMARGIN", new_y="NEXT")
+            pdf.ln(1)
+
+        def table_row(cells: list[str], widths: list[float], bold: bool = False) -> None:
+            pdf.set_font("Helvetica", "B" if bold else "", 9)
+            h = 7
+            for i, (cell, w) in enumerate(zip(cells, widths)):
+                if bold:
+                    pdf.set_fill_color(*accent)
+                    pdf.set_text_color(255, 255, 255)
+                else:
+                    pdf.set_fill_color(*light_bg)
+                    pdf.set_text_color(*dark)
+                pdf.cell(w, h, str(cell), border=0, fill=True)
+            pdf.ln(h)
+
+        # Title block
+        pdf.set_font("Helvetica", "B", 22)
+        pdf.set_text_color(*accent)
+        pdf.cell(0, 14, data.get("report_title", "Clinical Trial Report"), new_x="LMARGIN", new_y="NEXT")
+        pdf.set_font("Helvetica", "", 10)
+        pdf.set_text_color(*gray)
+        pdf.cell(0, 6, f"{data.get('condition', '')}  |  {data.get('generated_date', '')}  |  {data.get('author_name', '')}", new_x="LMARGIN", new_y="NEXT")
+        pdf.ln(6)
+
+        # Executive summary
+        if data.get("include_executive_summary", True):
+            heading("Executive Summary")
+            for line in data.get("executive_summary", []):
+                body(f"  {line}")
+            pdf.ln(3)
+
+        # Data overview
+        heading("Data Overview")
+        metrics = [
+            ("Total Trials", data.get("total_trials", "-")),
+            ("Median Enrollment", data.get("median_enrollment", "-")),
+            ("Median Duration (days)", data.get("median_duration_days", "-")),
+            ("Avg Completion Rate", data.get("avg_completion_rate", "-")),
+        ]
+        pdf.set_font("Helvetica", "", 10)
+        col_w = (pdf.w - pdf.l_margin - pdf.r_margin) / len(metrics)
+        pdf.set_text_color(*gray)
+        for label, _ in metrics:
+            pdf.cell(col_w, 5, label, align="C")
+        pdf.ln(5)
+        pdf.set_font("Helvetica", "B", 14)
+        pdf.set_text_color(*dark)
+        for _, val in metrics:
+            pdf.cell(col_w, 8, str(val), align="C")
+        pdf.ln(12)
+
+        phase_table = data.get("phase_table", [])
+        if phase_table:
+            widths = [40, 30, 45, 45]
+            table_row(["Phase", "Count", "Avg Enrollment", "Completion Rate"], widths, bold=True)
+            for row in phase_table:
+                table_row([row["phase"], row["count"], row["avg_enrollment"], row["completion_rate"]], widths)
+            pdf.ln(6)
+
+        # Causal analysis
+        if data.get("include_causal", True):
+            heading("Causal Analysis")
+            ate_fmt = data.get("ate_formatted", "N/A")
+            ate_ci = data.get("ate_ci", "N/A")
+            outcome = data.get("outcome_variable", "completion_rate")
+            body(f"Average Treatment Effect on {outcome}: {ate_fmt}  (95% CI: {ate_ci})")
+
+            subgroup_table = data.get("subgroup_table", [])
+            if subgroup_table:
+                pdf.ln(2)
+                pdf.set_font("Helvetica", "B", 11)
+                pdf.set_text_color(*dark)
+                pdf.cell(0, 7, "Subgroup Effects", new_x="LMARGIN", new_y="NEXT")
+                pdf.ln(2)
+                widths = [35, 40, 30, 40, 20, 20]
+                table_row(["Age Group", "Condition", "CATE", "95% CI", "N", "Sig."], widths, bold=True)
+                for sg in subgroup_table:
+                    table_row([
+                        sg["age_group"], sg["condition"], sg["cate_formatted"],
+                        sg["ci_formatted"], str(sg["n_samples"]),
+                        "Yes" if sg["significant"] else "No",
+                    ], widths)
+                pdf.ln(4)
+
+            top_features = data.get("top_features", [])
+            if top_features:
+                pdf.set_font("Helvetica", "B", 11)
+                pdf.set_text_color(*dark)
+                pdf.cell(0, 7, "Top Feature Drivers", new_x="LMARGIN", new_y="NEXT")
+                for feat in top_features:
+                    body(f"  - {feat}")
+            pdf.ln(3)
+
+        # Simulation
+        if data.get("include_simulation", True):
+            heading("Adaptive Trial Simulation")
+            sim_table = data.get("simulation_table", [])
+            n_sim = data.get("n_simulations", 0)
+            if n_sim:
+                body(f"Based on {n_sim:,} Monte Carlo simulations.")
+            if sim_table:
+                widths = [50, 35, 35, 35]
+                table_row(["Metric", "Traditional", "Adaptive", "Improvement"], widths, bold=True)
+                for row in sim_table:
+                    table_row([row["metric"], row["traditional"], row["adaptive"], row["improvement"]], widths)
+            pdf.ln(4)
+
+        # AI insights
+        if data.get("include_ai_insights", True):
+            insights = data.get("ai_insights", [])
+            if insights:
+                heading("AI-Generated Insights")
+                for i, insight in enumerate(insights, 1):
+                    body(f"{i}. {insight}")
+                pdf.ln(3)
+
+        # Methodology
+        if data.get("include_methodology", True):
+            heading("Methodology")
+            econml_v = data.get("econml_version", "N/A")
+            body(f"Causal inference: EconML CausalForestDML (v{econml_v}) with 200 estimators, "
+                 f"3-fold cross-validation, and SHAP feature importance.")
+            body("Adaptive simulation: Thompson Sampling with Beta-Bernoulli conjugate updates.")
+            body("Retrieval-augmented Q&A: FAISS index with MiniLM-L6-v2 embeddings.")
+
+        return bytes(pdf.output())
