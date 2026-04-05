@@ -3,8 +3,7 @@ title: Clinical Trial Intelligence Platform
 emoji: 🧬
 colorFrom: blue
 colorTo: indigo
-sdk: streamlit
-sdk_version: 1.32.0
+sdk: docker
 app_file: app/main.py
 pinned: false
 license: mit
