@@ -74,7 +74,7 @@ class ReportGenerator:
             if "completion_rate" in df.columns and n_trials
             else float("nan")
         )
-        avg_cr_fmt = f"{avg_cr:.1%}" if pd.notna(avg_cr) else "—"
+        avg_cr_fmt = f"{avg_cr:.1%}" if pd.notna(avg_cr) else "-"
 
         phase_table: list[dict[str, Any]] = []
         if n_trials and "phase" in df.columns and "nct_id" in df.columns:
@@ -95,10 +95,10 @@ class ReportGenerator:
                         "count": f"{int(r['count']):,}",
                         "avg_enrollment": f"{float(r['avg_enrollment']):,.0f}"
                         if pd.notna(r["avg_enrollment"])
-                        else "—",
+                        else "-",
                         "completion_rate": f"{float(cr):.1%}"
                         if pd.notna(cr)
-                        else "—",
+                        else "-",
                     }
                 )
 
@@ -145,7 +145,7 @@ class ReportGenerator:
                 imp = float(r.get("importance", 0.0))
                 top_features.append(f"{feat} (importance: {imp:.3f})")
         if not top_features:
-            top_features = ["— (fit heterogeneous effect model to populate drivers)"]
+            top_features = ["(run the causal analysis to populate drivers)"]
 
         trad = sim_results.get("trad", {})
         adapt = sim_results.get("adapt", {})
@@ -184,7 +184,7 @@ class ReportGenerator:
                 "metric": "Correct Winner",
                 "traditional": f"{trad_correct:.0%}",
                 "adaptive": f"{adapt_correct:.0%}",
-                "improvement": "—",
+                "improvement": "-",
                 "improved": False,
             },
             {
@@ -265,15 +265,15 @@ class ReportGenerator:
         """Render HTML and convert to PDF bytes.
 
         Tries three backends in order:
-          1. WeasyPrint  — pure Python, best output
-          2. pdfkit      — requires wkhtmltopdf system binary
-          3. HTML bytes  — fallback; caller should offer .html download
+          1. WeasyPrint (pure Python, best output)
+          2. pdfkit (requires wkhtmltopdf system binary)
+          3. HTML bytes (fallback; caller should offer .html download)
 
         Returns (content_bytes, format) where format is "pdf" or "html".
         """
         html_string = self.render_html(data)
 
-        # ── Try 1: WeasyPrint ─────────────────────────────────
+        # Try WeasyPrint first
         try:
             from weasyprint import HTML as WeasyprintHTML
 
@@ -285,7 +285,7 @@ class ReportGenerator:
         except Exception as exc:
             logger.warning("WeasyPrint failed (%s), trying pdfkit…", exc)
 
-        # ── Try 2: pdfkit (needs wkhtmltopdf binary) ──────────
+        # Fall back to pdfkit
         try:
             import pdfkit
 
@@ -299,6 +299,6 @@ class ReportGenerator:
         except Exception as exc:
             logger.warning("pdfkit failed (%s), falling back to HTML.", exc)
 
-        # ── Try 3: Return raw HTML bytes ──────────────────────
+        # Last resort: return raw HTML
         logger.info("Returning HTML bytes as final fallback.")
         return html_string.encode("utf-8"), "html"

@@ -143,7 +143,7 @@ Answer questions using ONLY the trial data provided in the context.
 Always mention the NCT ID when referencing a specific trial.
 Be precise with numbers and statistics.
 If the answer cannot be found in the provided context, say exactly: "The available trial data does not contain enough information to answer this question."
-Keep answers concise — 2-4 sentences maximum unless a comparison or list is needed."""
+Keep answers concise, 2-4 sentences maximum unless a comparison or list is needed."""
 
         user_message = f"""Context:
 {context}
@@ -158,7 +158,7 @@ Question: {question}"""
             else:
                 cr_part = "completion rate not available in metadata"
             answer = (
-                "[DEMO MODE — Set GEMINI_API_KEY, GOOGLE_API_KEY, or ANTHROPIC_API_KEY in .env / Streamlit secrets] "
+                "[DEMO MODE - Set GEMINI_API_KEY, GOOGLE_API_KEY, or ANTHROPIC_API_KEY in .env / Streamlit secrets] "
                 f"Based on the retrieved trials, the most relevant result is "
                 f"{top_trial.get('brief_title', 'Unknown')} "
                 f"(NCT ID: {top_trial.get('nct_id', 'N/A')}) with "

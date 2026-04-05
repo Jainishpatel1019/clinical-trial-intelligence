@@ -1,4 +1,4 @@
-"""Causal Analysis page for treatment effect exploration workflows."""
+"""Causal analysis page - estimates who benefits most from treatment."""
 
 import streamlit as st
 import pandas as pd
@@ -199,8 +199,8 @@ if run_button or _causal_fit_ready():
         auc = ps_result.get("auc_roc", 0)
         if auc < 0.6:
             st.caption(
-                f"AUC-ROC = {auc:.3f} — close to 0.5 means treatment assignment was nearly random. "
-                "This actually **strengthens** our causal estimates since selection bias is minimal."
+                f"AUC-ROC = {auc:.3f}. Close to 0.5 means treatment assignment was nearly random. "
+                "This is actually good for causal estimates since selection bias is minimal."
             )
     with c_right:
         st.plotly_chart(
@@ -323,9 +323,9 @@ else:
         """
 After you run the analysis, this page shows:
 
-- **Overall treatment benefit** — does the treatment help on average?
+- **Overall treatment benefit** - does the treatment help on average?
 - **Which patient groups** benefit more (or less) than average
-- **What drives the difference** — which factors matter most
+- **What drives the difference** - which factors matter most
 - **Visual breakdown** by age group and disease
 
 Select conditions and an outcome in the sidebar, then press **Run Analysis**.
@@ -366,7 +366,7 @@ if _HAS_MLFLOW:
                         st.dataframe(show, use_container_width=True, height=300)
                         st.caption(
                             f"{len(runs_df)} run(s) logged. "
-                            "View full details with `mlflow ui` → http://localhost:5000"
+                            "View full details with `mlflow ui` at http://localhost:5000"
                         )
                     else:
                         st.info("Runs exist but no metrics columns found yet.")

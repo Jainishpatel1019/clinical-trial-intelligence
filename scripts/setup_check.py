@@ -19,11 +19,11 @@ def check(name, condition, fix=None):
     status = "✅" if condition else "❌"
     print(f"  {status} {name}")
     if not condition and fix:
-        print(f"     → Fix: {fix}")
+        print(f"     Fix: {fix}")
     return condition
 
 
-print("\n🧬 Clinical Trial Intelligence — Setup Check\n")
+print("\n🧬 Clinical Trial Intelligence - Setup Check\n")
 print("ENVIRONMENT:")
 check("Python 3.11+", sys.version_info >= (3, 11), "Install Python 3.11")
 check(
@@ -35,13 +35,13 @@ key = os.getenv("ANTHROPIC_API_KEY")
 check(
     "ANTHROPIC_API_KEY set",
     bool(key and key != "your_anthropic_api_key_here"),
-    "Add your key to .env (optional — app works in demo mode without it)",
+    "Add your key to .env (optional, app works in demo mode without it)",
 )
 gkey = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
 check(
     "GEMINI_API_KEY or GOOGLE_API_KEY set",
     bool(gkey and gkey not in ("your_gemini_api_key_here", "your_google_api_key_here")),
-    "Add Gemini key to .env (optional — RAG uses Gemini before Claude when set)",
+    "Add Gemini key to .env (optional, used for RAG when set)",
 )
 
 print("\nDATA:")

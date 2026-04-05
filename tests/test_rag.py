@@ -1,4 +1,4 @@
-"""Tests for RAG indexing and QA (mocked ST — no model download or LLM API calls)."""
+"""Tests for RAG indexing and QA (mocked ST - no model download or LLM API calls)."""
 
 import os
 import sys
@@ -18,7 +18,7 @@ def sample_trial_df() -> pd.DataFrame:
         rows.append(
             {
                 "nct_id": f"NCT{i+1:07d}",
-                "brief_title": f"Study of Condition Alpha — arm {i}",
+                "brief_title": f"Study of Condition Alpha arm {i}",
                 "condition": "Type 2 Diabetes",
                 "phase": "Phase 2",
                 "overall_status": "Completed",

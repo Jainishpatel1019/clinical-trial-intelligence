@@ -1,4 +1,4 @@
-"""Premium warm-palette design system — every pixel intentional."""
+"""Warm-palette design system for the Streamlit app."""
 
 from __future__ import annotations
 
@@ -7,7 +7,7 @@ import streamlit as st
 _BASE = """
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap');
 
-/* ── Reset & base ─────────────────────────────────────────── */
+/* Reset & base */
 html, body, [data-testid="stAppViewContainer"], .stApp {
     font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
     color: #2D2A26;
@@ -25,7 +25,7 @@ section.main > div.block-container {
     max-width: 1200px !important;
 }
 
-/* ── Sidebar ──────────────────────────────────────────────── */
+/* Sidebar */
 section[data-testid="stSidebar"] {
     background: #EFEDE7 !important;
     border-right: 1px solid rgba(0,0,0,0.06) !important;
@@ -45,7 +45,7 @@ section[data-testid="stSidebar"] h3 {
     margin-bottom: 0.5rem !important;
 }
 
-/* ── Typography ───────────────────────────────────────────── */
+/* Typography */
 h1 {
     font-family: "Playfair Display", Georgia, serif !important;
     font-weight: 500 !important;
@@ -71,7 +71,7 @@ p, li, span, label {
     line-height: 1.6 !important;
 }
 
-/* ── Buttons ──────────────────────────────────────────────── */
+/* Buttons */
 .stButton > button {
     border-radius: 8px !important;
     font-weight: 500 !important;
@@ -105,7 +105,7 @@ p, li, span, label {
     transform: translateY(-1px) !important;
 }
 
-/* ── Metric cards ─────────────────────────────────────────── */
+/* Metric cards */
 div[data-testid="metric-container"] {
     background: #FFFFFF !important;
     border: 1px solid rgba(0,0,0,0.06) !important;
@@ -133,7 +133,7 @@ div[data-testid="metric-container"]:hover {
     font-size: 0.78rem !important;
 }
 
-/* ── Inputs & selects ─────────────────────────────────────── */
+/* Inputs & selects */
 .stTextInput input, .stTextArea textarea {
     border-radius: 8px !important;
     border: 1px solid rgba(0,0,0,0.1) !important;
@@ -154,7 +154,7 @@ div[data-testid="metric-container"]:hover {
     background-color: #C66A3E !important;
 }
 
-/* ── Tabs ─────────────────────────────────────────────────── */
+/* Tabs */
 .stTabs [data-baseweb="tab-list"] {
     gap: 0 !important;
     background: #EFEDE7 !important;
@@ -180,7 +180,7 @@ div[data-testid="metric-container"]:hover {
     display: none !important;
 }
 
-/* ── Expanders ────────────────────────────────────────────── */
+/* Expanders */
 details[data-testid="stExpander"] {
     background: #FFFFFF !important;
     border: 1px solid rgba(0,0,0,0.06) !important;
@@ -192,14 +192,14 @@ details[data-testid="stExpander"] summary {
     font-size: 0.9rem !important;
 }
 
-/* ── Alerts ───────────────────────────────────────────────── */
+/* Alerts */
 .stAlert {
     border-radius: 10px !important;
     border: none !important;
     font-size: 0.9rem !important;
 }
 
-/* ── Dataframes ───────────────────────────────────────────── */
+/* Dataframes */
 div[data-testid="stDataFrame"] {
     border-radius: 12px !important;
     border: 1px solid rgba(0,0,0,0.06) !important;
@@ -207,7 +207,7 @@ div[data-testid="stDataFrame"] {
     box-shadow: 0 1px 3px rgba(0,0,0,0.03) !important;
 }
 
-/* ── Plotly charts ────────────────────────────────────────── */
+/* Plotly charts */
 .js-plotly-plot .plotly .modebar {
     opacity: 0;
     transition: opacity 0.2s ease !important;
@@ -216,7 +216,7 @@ div[data-testid="stDataFrame"] {
     opacity: 1;
 }
 
-/* ── Dividers ─────────────────────────────────────────────── */
+/* Dividers */
 hr {
     border: none !important;
     height: 1px !important;
@@ -224,7 +224,7 @@ hr {
     margin: 1.5rem 0 !important;
 }
 
-/* ── Page-enter transition ────────────────────────────────── */
+/* Page-enter transition */
 .main .block-container {
     animation: pageIn 0.3s ease;
 }
@@ -233,7 +233,7 @@ hr {
     to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Shimmer progress bar (shown during long runs) ────────── */
+/* Shimmer progress bar */
 .cti-progress-bar {
     position: fixed;
     top: 0; left: 0;
@@ -248,7 +248,7 @@ hr {
     100% { background-position: -200% 0; }
 }
 
-/* ── Floating hero dots ───────────────────────────────────── */
+/* Floating hero dots */
 .cti-hero-wrap {
     position: relative;
     overflow: hidden;
@@ -267,7 +267,7 @@ hr {
     100% { transform: translateY(-70px); opacity: 0; }
 }
 
-/* ── Card scroll-reveal ───────────────────────────────────── */
+/* Card scroll-reveal */
 .cti-step-card {
     opacity: 0;
     transform: translateY(20px);
@@ -282,7 +282,7 @@ hr {
 .cti-step-col:nth-child(4) .cti-step-card { animation-delay: 0.40s; }
 .cti-step-col:nth-child(5) .cti-step-card { animation-delay: 0.50s; }
 
-/* ── How it works timeline ────────────────────────────────── */
+/* How it works timeline */
 .cti-how {
     display: flex;
     align-items: flex-start;
@@ -329,7 +329,7 @@ hr {
     line-height: 1.5;
 }
 
-/* ── Key Finding box ──────────────────────────────────────── */
+/* Key Finding box */
 .cti-finding {
     background: #FDF6F0;
     border: 2px solid #C66A3E;
@@ -351,14 +351,14 @@ hr {
     line-height: 1.6;
 }
 
-/* ── Spinners ─────────────────────────────────────────────── */
+/* Spinners */
 .stSpinner > div { border-top-color: #C66A3E !important; }
 
-/* ── Hide chrome ──────────────────────────────────────────── */
+/* Hide chrome */
 footer { visibility: hidden !important; height: 0 !important; }
 #MainMenu { visibility: hidden !important; }
 
-/* ── Home page hero ───────────────────────────────────────── */
+/* Home page hero */
 .cti-hero {
     padding: 2.5rem 0 1.5rem 0;
 }

@@ -2,7 +2,7 @@ import sys, os
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-print("=== Clinical Trial Intelligence — Smoke Test ===\n")
+print("=== Clinical Trial Intelligence - Smoke Test ===\n")
 
 # Test 1: Data layer
 print("1. Testing data layer...")

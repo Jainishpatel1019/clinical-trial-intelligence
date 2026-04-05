@@ -1,4 +1,4 @@
-"""Adaptive trial simulation via Thompson sampling (Beta–Bernoulli updates, no Ax)."""
+"""Adaptive trial simulation using Thompson sampling (Beta-Bernoulli)."""
 
 from __future__ import annotations
 
@@ -211,7 +211,7 @@ class AdaptiveTrialSimulator:
                 )
             )
         fig.update_layout(
-            title="Adaptive Allocation — Converges Toward Best Arm",
+            title="Adaptive Allocation Over Time",
             xaxis_title="Total Participants Enrolled",
             yaxis_title="% Allocation to Arm",
             template="plotly_white",

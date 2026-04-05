@@ -1,4 +1,4 @@
-"""Trial Simulator page for adaptive trial simulation interfaces."""
+"""Trial simulator - adaptive vs traditional trial design comparison."""
 
 import streamlit as st
 import pandas as pd

@@ -1,4 +1,4 @@
-"""RAG Assistant page for retrieval-augmented clinical trial Q&A."""
+"""RAG chat page - ask questions about clinical trials in plain English."""
 
 import hashlib
 import os
@@ -133,7 +133,7 @@ with st.sidebar:
     elif qa_chain.llm_backend == "anthropic":
         st.success("✅ Powered by Claude")
     else:
-        st.warning("⚠️ Demo mode — add GEMINI_API_KEY to .env for real answers")
+        st.warning("⚠️ Demo mode - add GEMINI_API_KEY to .env for real answers")
 
     st.divider()
     st.markdown("**Try these questions:**")
@@ -180,7 +180,7 @@ with st.sidebar:
         st.success("✅ Claude API connected")
 
     with st.expander("LLM connection (troubleshooting)", expanded=False):
-        st.caption("No secret values are shown — only whether variables are non-empty.")
+        st.caption("No secret values are shown here, only whether variables are non-empty.")
         st.text(f"Repo .env path:\n{_ENV_FILE}")
         st.text(f"Repo .env exists: {_ENV_FILE.is_file()}")
         st.text(f"dotenv loaded that file: {_DOTENV_LOADED}")
@@ -190,9 +190,9 @@ with st.sidebar:
             n = len(raw)
             st.text(f"{name} length: {n}")
             if name in ("GEMINI_API_KEY", "GOOGLE_API_KEY") and raw in _GEMINI_PLACEHOLDERS:
-                st.caption(f"→ `{name}` is still the **template placeholder**, not a real key.")
+                st.caption(f"`{name}` is still the template placeholder, not a real key.")
             if name == "ANTHROPIC_API_KEY" and raw == _ANTHROPIC_PLACEHOLDER:
-                st.caption("→ `ANTHROPIC_API_KEY` is still the **template placeholder**.")
+                st.caption("`ANTHROPIC_API_KEY` is still the template placeholder.")
         st.text(f"Active backend: {qa_chain.llm_backend}")
 
 if "messages" not in st.session_state:
@@ -205,7 +205,7 @@ if not st.session_state.messages:
     st.markdown(
         '<div class="cti-chat-welcome">Try asking something like <strong>"Which cancer trials had '
         'the most patients?"</strong> or <strong>"What is the average success rate for diabetes '
-        'trials?"</strong> — or pick a question from the sidebar.</div>',
+        'trials?"</strong>, or pick a question from the sidebar.</div>',
         unsafe_allow_html=True,
     )
 
@@ -222,7 +222,7 @@ for msg in st.session_state.messages:
                     )
                     st.markdown(
                         f"**{conf_color} {src.get('brief_title', 'Unknown')}** "
-                        f"(NCT: {src.get('nct_id', 'N/A')}) — Score: {score:.2f}"
+                        f"(NCT: {src.get('nct_id', 'N/A')}) - Score: {score:.2f}"
                     )
                     st.caption(text)
                     if i < len(msg["sources"]) - 1:

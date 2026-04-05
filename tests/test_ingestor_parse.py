@@ -1,4 +1,4 @@
-"""Tests for TrialIngestor.parse_raw — no network calls."""
+"""Tests for TrialIngestor.parse_raw - no network calls."""
 
 import os
 import sys

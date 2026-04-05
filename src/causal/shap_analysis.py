@@ -76,7 +76,7 @@ class SHAPAnalyzer:
                 "Increases effect": "#2ecc71",
                 "Decreases effect": "#e74c3c",
             },
-            title="Feature Importance — What Drives Treatment Effect Heterogeneity?",
+            title="Feature Importance: Drivers of Treatment Effect Differences",
             template="plotly_white",
         )
         fig.update_layout(yaxis={"categoryorder": "total ascending"})

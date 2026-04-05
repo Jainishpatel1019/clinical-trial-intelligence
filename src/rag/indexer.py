@@ -77,7 +77,7 @@ Condition: {_safe_str(row.get('condition'))}
 Phase: {_safe_str(row.get('phase'))} | Status: {_safe_str(row.get('overall_status'))}
 Enrollment: {_safe_int(row.get('enrollment_count'), 0):,} participants
 Duration: {_safe_int(row.get('trial_duration_days'), 0)} days
-Age Range: {_safe_num(row.get('min_age_years'), 0):.0f}–{_safe_num(row.get('max_age_years'), 0):.0f} years | Sex: {_safe_str(row.get('sex'), 'All')}
+Age Range: {_safe_num(row.get('min_age_years'), 0):.0f}-{_safe_num(row.get('max_age_years'), 0):.0f} years | Sex: {_safe_str(row.get('sex'), 'All')}
 Randomized: {_yes_no_randomized(row.get('is_randomized'))}
 Completion Rate: {cr_fmt}"""
 

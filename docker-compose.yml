@@ -6,7 +6,7 @@ services:
       - "8501:8501"
     volumes:
       - ./data:/app/data
-    # No env_file required: copy .env.example → .env for secrets, or rely on defaults.
+    # Copy .env.example to .env for secrets, or use defaults.
     environment:
       DEMO_MODE: ${DEMO_MODE:-true}
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}

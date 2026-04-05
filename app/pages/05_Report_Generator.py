@@ -1,4 +1,4 @@
-"""Report Generator page for PDF/HTML trial intelligence briefs."""
+"""Report generator - exports analysis results as PDF or HTML."""
 
 import streamlit as st
 import pandas as pd
@@ -27,9 +27,9 @@ def _report_sim_ready() -> bool:
 
 st.markdown('<div class="cti-section-label">Reports</div>', unsafe_allow_html=True)
 st.title("📄 Download Your Findings")
-st.caption("Generate a PDF report with all your analysis results — ready to share with your team.")
+st.caption("Generate a PDF report with your analysis results. Ready to share with your team.")
 
-with st.expander("Checklist — what do you need before generating?", expanded=False):
+with st.expander("Checklist - what do you need before generating?", expanded=False):
     checks = {
         "Trial data loaded": True,
         "Analysis complete": _report_hte_ready(),
@@ -39,7 +39,7 @@ with st.expander("Checklist — what do you need before generating?", expanded=F
         if ok:
             st.success(f"✅ {label}")
         else:
-            st.info(f"⬜ {label} — complete this step first")
+            st.info(f"⬜ {label} - complete this step first")
 
 st.markdown('<div class="cti-section-label">Configure</div>', unsafe_allow_html=True)
 col_l, col_r = st.columns(2)
@@ -180,8 +180,8 @@ if gen_button:
                 st.session_state["last_report_fmt"] = "pdf"
             else:
                 st.info(
-                    "Downloaded as HTML — open in Chrome and use "
-                    "**File → Print → Save as PDF** for a PDF version."
+                    "Downloaded as HTML. Open in Chrome and use "
+                    "**File > Print > Save as PDF** for a PDF version."
                 )
                 filename = f"trial_intelligence_report_{ts}.html"
                 st.session_state["last_report_bytes"] = content_bytes
@@ -215,8 +215,8 @@ if st.session_state.get("last_report_bytes"):
     )
     if _fmt == "html":
         st.info(
-            "Downloaded as HTML — open in Chrome and use "
-            "**File → Print → Save as PDF** for a PDF version."
+            "Downloaded as HTML. Open in Chrome and use "
+            "**File > Print > Save as PDF** for a PDF version."
         )
 
 with st.expander("📋 Report sections preview"):
@@ -224,11 +224,11 @@ with st.expander("📋 Report sections preview"):
         """
 The PDF report includes:
 
-1. **Executive Summary** — 4 auto-generated key findings  
-2. **Data Overview** — Trials table by phase with enrollment and completion stats  
-3. **Causal Analysis** — ATE with confidence intervals, subgroup effects table, top feature drivers  
-4. **Adaptive Simulation** — Traditional vs Adaptive comparison table  
-5. **AI Insights** — RAG-generated answers grounded in trial data (or defaults from this page)  
-6. **Methodology** — Technical description of all models used  
+1. **Executive Summary** - key findings
+2. **Data Overview** - trials by phase with enrollment and completion stats
+3. **Causal Analysis** - ATE with confidence intervals, subgroup effects, top feature drivers
+4. **Adaptive Simulation** - traditional vs adaptive comparison
+5. **Insights** - answers grounded in trial data
+6. **Methodology** - description of models used
 """
     )

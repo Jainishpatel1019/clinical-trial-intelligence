@@ -1,4 +1,4 @@
-"""Data Explorer page for inspecting clinical trial datasets."""
+"""Data explorer - browse and filter clinical trials."""
 
 import sys, os
 
@@ -98,7 +98,7 @@ with st.sidebar:
     with st.expander("Fetch real ClinicalTrials.gov data", expanded=False):
         st.caption(
             "Pull live trials from the public API. "
-            "No API key needed — ClinicalTrials.gov is free and open."
+            "No API key needed. ClinicalTrials.gov is free and open."
         )
         live_conditions = st.multiselect(
             "Conditions to fetch",

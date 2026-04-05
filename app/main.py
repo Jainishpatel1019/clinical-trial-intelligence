@@ -1,4 +1,4 @@
-"""Streamlit entrypoint — landing page."""
+"""Streamlit entrypoint - landing page."""
 
 import os
 import sys
@@ -28,7 +28,7 @@ for key, val in {"messages": [], "pending_question": None}.items():
     if key not in st.session_state:
         st.session_state[key] = val
 
-# ── Hero with floating dots ───────────────────────────────────
+# Hero with floating dots
 _DOT_SPECS = [
     (10,  5,  4, 9,  0.0), (18, 20,  6, 11, 1.2), (30, 45,  8, 13, 0.4),
     (45, 70,  4, 10, 2.1), (60, 88,  6, 12, 0.8), (75, 15,  8, 14, 1.5),
@@ -54,13 +54,13 @@ st.markdown(
             <div class="cti-hero-eyebrow">Clinical Trial Intelligence</div>
             <div class="cti-hero-title">
                 Find out which treatments<br>
-                <span class="cti-accent">actually work — and for whom</span>
+                <span class="cti-accent">actually work, and for whom</span>
             </div>
             <p class="cti-hero-sub">
                 Every year, thousands of clinical trials test new treatments for
                 diseases like cancer, diabetes, and heart failure.
                 This platform helps you explore that data, discover which patient
-                groups benefit most, and get instant answers — all in plain English.
+                groups benefit most, and get instant answers in plain English.
             </p>
         </div>
     </div>
@@ -68,7 +68,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ── Live stats ────────────────────────────────────────────────
+# Live stats
 conn = None
 try:
     conn = get_connection()
@@ -86,7 +86,7 @@ finally:
     if conn is not None:
         conn.close()
 
-# ── How it works ──────────────────────────────────────────────
+# How it works
 st.markdown(
     """
     <div class="cti-how">
@@ -98,7 +98,7 @@ st.markdown(
         <div class="cti-how-step">
             <div class="cti-how-num">02</div>
             <div class="cti-how-title">Discover</div>
-            <div class="cti-how-desc">Our AI finds which patient groups benefit most from each treatment</div>
+            <div class="cti-how-desc">See which patient groups benefit most from each treatment</div>
         </div>
         <div class="cti-how-step">
             <div class="cti-how-num">03</div>
@@ -110,7 +110,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ── What you can do ───────────────────────────────────────────
+# What you can do
 st.markdown('<div class="cti-section-label">What you can do</div>', unsafe_allow_html=True)
 
 steps = [
@@ -121,18 +121,18 @@ steps = [
     ),
     (
         "🔬", "Who Benefits Most?",
-        "Our AI finds which patient groups — by age, disease, trial size — "
+        "Find out which patient groups, by age, disease, or trial size, "
         "get the biggest benefit from a treatment. Not averages. Specifics."
     ),
     (
         "🎲", "Smarter Trial Design",
         "See what happens when you stop giving patients the losing treatment "
-        "early. Our simulator shows how many people you can save."
+        "early. The simulator shows how many more people get the better option."
     ),
     (
         "💬", "Ask Anything",
         'Type a question like "Which cancer trials had the best results?" '
-        "and get an answer backed by real data — with sources cited."
+        "and get an answer backed by real data, with sources cited."
     ),
     (
         "🗺️", "Global View",
@@ -152,7 +152,7 @@ for col, (icon, title, desc) in zip(cols, steps):
         unsafe_allow_html=True,
     )
 
-# ── Sidebar ───────────────────────────────────────────────────
+# Sidebar
 with st.sidebar:
     st.markdown(
         '<div style="font-family: Playfair Display, serif; font-size: 1.3rem; '

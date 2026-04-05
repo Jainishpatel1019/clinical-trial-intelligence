@@ -125,7 +125,7 @@ except Exception:
     st.error("No data found. Visit Data Explorer first.")
     st.stop()
 
-# ── Header ────────────────────────────────────────────────────
+# Header
 st.markdown('<div class="cti-section-label">Global Overview</div>', unsafe_allow_html=True)
 st.title("🗺️ Where Trials Happen")
 st.caption("Drag to rotate the globe. Hover over a dot to see trial details.")
@@ -154,14 +154,14 @@ total_trials = int(geo_df["n_trials"].sum())
 n_cond = geo_df["condition"].nunique()
 n_regions = geo_df["region"].nunique()
 
-# ── KPI ───────────────────────────────────────────────────────
+# KPI
 kpi_cols = st.columns(4)
 kpi_cols[0].metric("Trials Shown", f"{total_trials:,}")
 kpi_cols[1].metric("Diseases", str(n_cond))
 kpi_cols[2].metric("Regions", str(n_regions))
 kpi_cols[3].metric("Research Sites", f"{len(geo_df):,}")
 
-# ── 3D Globe ──────────────────────────────────────────────────
+# 3D Globe
 fig = go.Figure()
 
 for region, color in _COLORS.items():
@@ -252,7 +252,7 @@ st.plotly_chart(fig, use_container_width=True, config={
 })
 st.markdown('</div>', unsafe_allow_html=True)
 
-# ── Regional breakdown ────────────────────────────────────────
+# Regional breakdown
 st.markdown('<div class="cti-section-label">By Region</div>', unsafe_allow_html=True)
 
 col_left, col_right = st.columns(2)
