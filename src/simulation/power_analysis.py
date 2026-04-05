@@ -78,7 +78,7 @@ def plot_power_curve(
         title="Statistical Power Curve by Sample Size",
         xaxis_title="n per arm (total N = 2 × n)",
         yaxis_title="Power",
-        template="plotly_white",
+        template="plotly_dark",
         yaxis_range=[0, 1.05],
         legend_title="Effect size",
     )

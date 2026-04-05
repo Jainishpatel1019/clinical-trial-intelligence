@@ -214,6 +214,6 @@ class AdaptiveTrialSimulator:
             title="Adaptive Allocation Over Time",
             xaxis_title="Total Participants Enrolled",
             yaxis_title="% Allocation to Arm",
-            template="plotly_white",
+            template="plotly_dark",
         )
         return fig

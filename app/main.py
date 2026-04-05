@@ -28,7 +28,6 @@ for key, val in {"messages": [], "pending_question": None}.items():
     if key not in st.session_state:
         st.session_state[key] = val
 
-# Hero with floating dots
 _DOT_SPECS = [
     (10,  5,  4, 9,  0.0), (18, 20,  6, 11, 1.2), (30, 45,  8, 13, 0.4),
     (45, 70,  4, 10, 2.1), (60, 88,  6, 12, 0.8), (75, 15,  8, 14, 1.5),
@@ -68,7 +67,6 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# Live stats
 conn = None
 try:
     conn = get_connection()
@@ -86,7 +84,6 @@ finally:
     if conn is not None:
         conn.close()
 
-# How it works
 st.markdown(
     """
     <div class="cti-how">
@@ -110,7 +107,6 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# What you can do
 st.markdown('<div class="cti-section-label">What you can do</div>', unsafe_allow_html=True)
 
 steps = [
@@ -152,11 +148,10 @@ for col, (icon, title, desc) in zip(cols, steps):
         unsafe_allow_html=True,
     )
 
-# Sidebar
 with st.sidebar:
     st.markdown(
-        '<div style="font-family: Playfair Display, serif; font-size: 1.3rem; '
-        'font-weight: 500; color: #1A1816; margin-bottom: 0.25rem;">🧬 Trial Intelligence</div>',
+        '<div style="font-family: Inter, sans-serif; font-size: 1.3rem; '
+        'font-weight: 700; color: #f1f5f9; margin-bottom: 0.25rem;">🧬 Trial Intelligence</div>',
         unsafe_allow_html=True,
     )
     st.caption("Select a page above to get started.")

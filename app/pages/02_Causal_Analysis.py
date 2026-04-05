@@ -223,10 +223,10 @@ if run_button or _causal_fit_ready():
             try:
                 styler = subgroup_df.style.map(
                     lambda v: (
-                        "background-color: #d5f5e3"
+                        "background-color: rgba(16, 185, 129, 0.2); color: #6ee7b7"
                         if pd.notna(v) and float(v) > 0
                         else (
-                            "background-color: #fadbd8"
+                            "background-color: rgba(239, 68, 68, 0.2); color: #fca5a5"
                             if pd.notna(v) and float(v) < 0
                             else ""
                         )
@@ -236,10 +236,10 @@ if run_button or _causal_fit_ready():
             except AttributeError:
                 styler = subgroup_df.style.applymap(
                     lambda v: (
-                        "background-color: #d5f5e3"
+                        "background-color: rgba(16, 185, 129, 0.2); color: #6ee7b7"
                         if pd.notna(v) and float(v) > 0
                         else (
-                            "background-color: #fadbd8"
+                            "background-color: rgba(239, 68, 68, 0.2); color: #fca5a5"
                             if pd.notna(v) and float(v) < 0
                             else ""
                         )
@@ -263,8 +263,8 @@ if run_button or _causal_fit_ready():
                         y=[label, label, label],
                         mode="lines+markers",
                         showlegend=False,
-                        line=dict(color="steelblue", width=2),
-                        marker=dict(size=[5, 8, 5], color="steelblue"),
+                        line=dict(color="#a78bfa", width=2),
+                        marker=dict(size=[5, 8, 5], color="#a78bfa"),
                     )
                 )
             fig_forest.add_vline(
@@ -272,7 +272,7 @@ if run_button or _causal_fit_ready():
             )
             fig_forest.update_layout(
                 title="Treatment Benefit by Group",
-                template="plotly_white",
+                template="plotly_dark",
                 xaxis_title="Benefit Score",
                 yaxis_title="",
                 margin=dict(l=160, r=40, t=60, b=40),
