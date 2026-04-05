@@ -14,6 +14,12 @@ license: mit
 
 Every year thousands of clinical trials run worldwide, but figuring out which treatments actually work and for which patients is buried in messy data. This platform pulls trial records from ClinicalTrials.gov, runs causal inference to estimate treatment effects across patient subgroups, and lets you ask questions about the data in plain English.
 
+| | |
+|---|---|
+| ![Home](screenshots/home.png) | ![Data Explorer](screenshots/data_explorer.png) |
+| ![Causal Analysis](screenshots/causal_analysis.png) | ![Trial Simulator](screenshots/trial_simulator.png) |
+| ![RAG Assistant](screenshots/rag_assistant.png) | ![Geographic Map](screenshots/geographic_map.png) |
+
 ## What it does
 
 - **Browse trials** - filter by disease, phase, status. See enrollment distributions and timelines.
