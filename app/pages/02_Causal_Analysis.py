@@ -366,7 +366,7 @@ if _HAS_MLFLOW:
                         st.dataframe(show, use_container_width=True, height=300)
                         st.caption(
                             f"{len(runs_df)} run(s) logged. "
-                            "View full details with `mlflow ui` at http://localhost:5000"
+                            "All metrics and parameters are tracked above."
                         )
                     else:
                         st.info("Runs exist but no metrics columns found yet.")
