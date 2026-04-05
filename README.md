@@ -25,7 +25,7 @@ Every year thousands of clinical trials run worldwide, but figuring out which tr
 - **Causal analysis** - fits an EconML causal forest to estimate who benefits most from treatment, not just the average effect.
 - **Adaptive simulator** - compares Thompson Sampling (patients get routed to the winning arm as data comes in) against traditional 50/50 allocation.
 - **Q&A** - type a question, get an answer grounded in the indexed trial data. Uses FAISS for retrieval and Gemini or Claude for generation.
-- **Reports** - export your analysis as PDF or HTML.
+- **Reports** - export your analysis as a PDF report.
 - **Global map** - 3D globe showing where trials are happening by region.
 
 ## How it works
@@ -38,9 +38,7 @@ Demo CSV (300 trials) ---+       |
                                  |
                                  +--> FAISS + Gemini/Claude --> Q&A with sources
                                                                      |
-                                                 Jinja2 + WeasyPrint <-+
-                                                         |
-                                                     PDF report
+                                                         Jinja2 + fpdf2 --> PDF report
 ```
 
 Data comes in from the ClinicalTrials.gov public API (or a bundled demo CSV). It gets stored in DuckDB, validated, then fed into three independent pipelines: causal inference, trial simulation, and retrieval-augmented Q&A.
@@ -53,8 +51,9 @@ Data comes in from the ClinicalTrials.gov public API (or a bundled demo CSV). It
 | Causal inference | EconML CausalForestDML + SHAP for feature importance |
 | Simulation | Thompson sampling with Beta-Bernoulli updates |
 | Search + Q&A | sentence-transformers (MiniLM-L6-v2) for embeddings, FAISS for retrieval, Gemini or Claude for answers |
-| Frontend | Streamlit |
-| Reports | Jinja2 templates, WeasyPrint for PDF |
+| Frontend | Streamlit (dark theme, Inter font) |
+| Reports | Jinja2 templates, fpdf2 for PDF |
+| Experiment tracking | MLflow |
 | Deploy | Docker, HuggingFace Spaces |
 | CI | GitHub Actions, pytest (38 tests) |
 
