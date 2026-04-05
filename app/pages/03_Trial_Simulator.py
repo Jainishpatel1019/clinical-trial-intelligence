@@ -142,7 +142,7 @@ if run_sim or _sim_results_ready():
             fig_bars.update_layout(
                 barmode="group",
                 title="How Were Patients Distributed?",
-                template="plotly_dark",
+                template="plotly_white",
                 xaxis_title="Treatment",
                 yaxis_title="Patients",
             )
@@ -178,7 +178,7 @@ if run_sim or _sim_results_ready():
             y="total_n",
             color="design",
             title="How Many Patients Were Needed?",
-            template="plotly_dark",
+            template="plotly_white",
         )
         st.plotly_chart(fig_box, use_container_width=True)
 

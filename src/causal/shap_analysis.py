@@ -77,7 +77,7 @@ class SHAPAnalyzer:
                 "Decreases effect": "#e74c3c",
             },
             title="Feature Importance: Drivers of Treatment Effect Differences",
-            template="plotly_dark",
+            template="plotly_white",
         )
         fig.update_layout(yaxis={"categoryorder": "total ascending"})
         return fig
@@ -98,7 +98,7 @@ class SHAPAnalyzer:
             x="cate",
             nbins=40,
             title="Distribution of Individual Treatment Effects (CATE)",
-            template="plotly_dark",
+            template="plotly_white",
         )
         fig.update_xaxes(title_text="Estimated Treatment Effect on Completion Rate")
         fig.update_yaxes(title_text="Number of Trials")

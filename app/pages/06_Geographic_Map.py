@@ -67,11 +67,11 @@ _REGION_CITIES = {
 }
 
 _COLORS = {
-    "North America": "#818cf8",
-    "Europe": "#f472b6",
-    "Asia Pacific": "#34d399",
-    "Africa": "#fbbf24",
-    "Middle East": "#38bdf8",
+    "North America": "#1A5276",
+    "Europe": "#C0392B",
+    "Asia Pacific": "#27AE60",
+    "Africa": "#F39C12",
+    "Middle East": "#8E44AD",
 }
 
 
@@ -199,32 +199,32 @@ fig.update_geos(
     projection_type="orthographic",
     projection_rotation=dict(lon=-30, lat=20, roll=0),
     showland=True,
-    landcolor="#1a1a2e",
+    landcolor="#E8E4DD",
     showocean=True,
-    oceancolor="#0b0b13",
+    oceancolor="#FAFAF7",
     showcountries=True,
-    countrycolor="rgba(124, 58, 237, 0.12)",
+    countrycolor="rgba(0,0,0,0.08)",
     showcoastlines=True,
-    coastlinecolor="rgba(124, 58, 237, 0.2)",
+    coastlinecolor="rgba(0,0,0,0.12)",
     showlakes=False,
     showframe=False,
-    bgcolor="#0b0b13",
+    bgcolor="#1C1C1C",
 )
 
 fig.update_layout(
     height=620,
     margin=dict(l=0, r=0, t=0, b=0),
-    paper_bgcolor="#0b0b13",
-    plot_bgcolor="#0b0b13",
-    font=dict(color="#e2e8f0", size=12),
+    paper_bgcolor="#1C1C1C",
+    plot_bgcolor="#1C1C1C",
+    font=dict(color="#E8E4DD", size=12),
     legend=dict(
         x=0.02, y=0.98,
-        bgcolor="rgba(14,14,23,0.85)",
-        bordercolor="rgba(124, 58, 237, 0.15)",
+        bgcolor="rgba(28,28,28,0.85)",
+        bordercolor="rgba(255,255,255,0.08)",
         borderwidth=1,
-        font=dict(size=12, color="#e2e8f0"),
+        font=dict(size=12, color="#E8E4DD"),
         itemsizing="constant",
-        title=dict(text="Region", font=dict(size=11, color="#64748b")),
+        title=dict(text="Region", font=dict(size=11, color="#ABABAB")),
     ),
     dragmode="pan",
 )
@@ -274,7 +274,7 @@ with col_left:
         ),
         text=region_data["total"],
         textposition="outside",
-        textfont=dict(size=13, color="#e2e8f0"),
+        textfont=dict(size=13, color="#1C1C1C"),
     ))
     fig_bar.update_layout(
         height=300,
@@ -312,7 +312,7 @@ with col_right:
         annotations=[dict(
             text=f"<b>{total_trials:,}</b><br>trials",
             x=0.5, y=0.5, font_size=15, showarrow=False,
-            font=dict(color="#e2e8f0"),
+            font=dict(color="#1C1C1C"),
         )],
     )
     st.plotly_chart(fig_donut, use_container_width=True)

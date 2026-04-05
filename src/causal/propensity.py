@@ -125,7 +125,7 @@ class PropensityScorer:
             xaxis_title="Propensity Score",
             yaxis_title="Count",
             barmode="overlay",
-            template="plotly_dark",
+            template="plotly_white",
         )
         fig.add_vline(x=0.5, line_dash="dash", line_color="gray")
         return fig

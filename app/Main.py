@@ -151,7 +151,7 @@ for col, (icon, title, desc) in zip(cols, steps):
 with st.sidebar:
     st.markdown(
         '<div style="font-family: Inter, sans-serif; font-size: 1.3rem; '
-        'font-weight: 700; color: #f1f5f9; margin-bottom: 0.25rem;">🧬 Trial Intelligence</div>',
+        'font-weight: 700; color: #1C1C1C; margin-bottom: 0.25rem;">🧬 Trial Intelligence</div>',
         unsafe_allow_html=True,
     )
     st.caption("Select a page above to get started.")

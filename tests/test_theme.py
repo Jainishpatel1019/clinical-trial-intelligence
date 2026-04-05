@@ -15,8 +15,8 @@ def test_theme_module_imports():
 
 def test_base_css_contains_palette():
     from app.theme import _BASE
-    assert "#0b0b13" in _BASE or "#14141f" in _BASE
-    assert "#7c3aed" in _BASE
+    assert "#FAFAF7" in _BASE or "#FFFFFF" in _BASE
+    assert "#1A5276" in _BASE
     assert "Inter" in _BASE
 
 

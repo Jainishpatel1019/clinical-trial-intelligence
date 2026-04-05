@@ -167,7 +167,7 @@ with left:
         color="phase",
         log_x=True,
         title="How Many Patients Per Trial",
-        template="plotly_dark",
+        template="plotly_white",
         labels={"enrollment_count": "Number of patients (log scale)", "count": "Number of trials"},
     )
     fig_hist.update_xaxes(title_text="Number of patients (log scale)")
@@ -182,7 +182,7 @@ with right:
         y="count",
         color="phase",
         title="Trial Count by Phase",
-        template="plotly_dark",
+        template="plotly_white",
     )
     st.plotly_chart(fig_bar, use_container_width=True)
 
@@ -195,7 +195,7 @@ fig_scatter = px.scatter(
     opacity=0.6,
     hover_data=["brief_title", "nct_id", "overall_status"],
     title="Bigger Trials Take Longer",
-    template="plotly_dark",
+    template="plotly_white",
 )
 st.plotly_chart(fig_scatter, use_container_width=True)
 
