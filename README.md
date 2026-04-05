@@ -51,7 +51,7 @@ Data comes in from the ClinicalTrials.gov public API (or a bundled demo CSV). It
 | Causal inference | EconML CausalForestDML + SHAP for feature importance |
 | Simulation | Thompson sampling with Beta-Bernoulli updates |
 | Search + Q&A | sentence-transformers (MiniLM-L6-v2) for embeddings, FAISS for retrieval, Gemini or Claude for answers |
-| Frontend | Streamlit (dark theme, Inter font) |
+| Frontend | Streamlit (light theme, Inter font) |
 | Reports | Jinja2 templates, fpdf2 for PDF |
 | Experiment tracking | MLflow |
 | Deploy | Docker, HuggingFace Spaces |
