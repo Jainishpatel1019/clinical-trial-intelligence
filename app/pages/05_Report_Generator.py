@@ -68,11 +68,6 @@ gen_button = st.button(
     "⚡ Generate Report", type="primary", use_container_width=True
 )
 
-with st.expander("Enable direct PDF generation"):
-    st.markdown("If you see an HTML fallback, install WeasyPrint in your terminal:")
-    st.code("pip install weasyprint", language="bash")
-    st.caption("Run this in your terminal to enable direct PDF generation")
-
 
 @contextmanager
 def _report_status(label: str):
