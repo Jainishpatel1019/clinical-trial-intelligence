@@ -84,7 +84,7 @@ for pkg in packages:
 
 print("\nAPP FILES:")
 app_files = [
-    "app/main.py",
+    "app/Main.py",
     "app/pages/01_Data_Explorer.py",
     "app/pages/02_Causal_Analysis.py",
     "app/pages/03_Trial_Simulator.py",
@@ -98,9 +98,9 @@ print("\n")
 if all(
     [
         os.path.exists(os.path.join(ROOT, "data/processed/demo_trials.csv")),
-        os.path.exists(os.path.join(ROOT, "app/main.py")),
+        os.path.exists(os.path.join(ROOT, "app/Main.py")),
     ]
 ):
-    print("🚀 Ready to run: streamlit run app/main.py\n")
+    print("🚀 Ready to run: streamlit run app/Main.py\n")
 else:
     print("⚠️  Fix the issues above before running the app.\n")

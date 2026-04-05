@@ -14,7 +14,7 @@ port = os.environ.get("PORT", "7860")
 if __name__ == "__main__":
     subprocess.run(
         [
-            sys.executable, "-m", "streamlit", "run", "app/main.py",
+            sys.executable, "-m", "streamlit", "run", "app/Main.py",
             f"--server.port={port}",
             "--server.address=0.0.0.0",
             "--server.headless=true",

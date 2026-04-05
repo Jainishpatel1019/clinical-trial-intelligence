@@ -76,6 +76,6 @@ print(
 )
 
 print("\n=== ALL TESTS PASSED ✅ ===")
-print("Run: streamlit run app/main.py")
+print("Run: streamlit run app/Main.py")
 
 conn.close()

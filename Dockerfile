@@ -22,7 +22,7 @@ RUN python scripts/generate_demo_data.py
 
 EXPOSE 7860
 
-CMD ["streamlit", "run", "app/main.py", \
+CMD ["streamlit", "run", "app/Main.py", \
     "--server.port=7860", \
     "--server.address=0.0.0.0", \
     "--server.headless=true", \

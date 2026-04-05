@@ -4,7 +4,7 @@ emoji: 🧬
 colorFrom: blue
 colorTo: indigo
 sdk: docker
-app_file: app/main.py
+app_file: app/Main.py
 pinned: false
 license: mit
 ---
@@ -66,7 +66,7 @@ cd clinical-trial-intelligence
 pip install -r requirements.txt
 cp .env.example .env          # add GEMINI_API_KEY for Q&A (optional)
 python scripts/generate_demo_data.py
-streamlit run app/main.py
+streamlit run app/Main.py
 ```
 
 To pull real data instead of demo data, go to the Data Explorer sidebar and click "Fetch from ClinicalTrials.gov". No API key needed, it's a free public API.
