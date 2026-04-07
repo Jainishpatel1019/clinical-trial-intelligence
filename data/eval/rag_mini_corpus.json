@@ -1,0 +1,27 @@
+[
+  {
+    "id": "p1",
+    "title": "Adaptive designs in oncology Phase II trials",
+    "text": "Bayesian adaptive trials can reduce sample size while maintaining error control when response rates vary across biomarker subgroups."
+  },
+  {
+    "id": "p2",
+    "title": "Heterogeneous treatment effects in heart failure",
+    "text": "Patient baseline risk and ejection fraction modify treatment benefit; causal forests help estimate subgroup effects from observational hospital data."
+  },
+  {
+    "id": "p3",
+    "title": "Pediatric trial feasibility",
+    "text": "Enrollment in pediatric studies is often slower; geographic concentration of sites affects timelines and generalizability of results."
+  },
+  {
+    "id": "p4",
+    "title": "Federated monitoring of clinical sites",
+    "text": "Distribution shift in lab values across sites can invalidate risk models; drift metrics trigger model review before deployment updates."
+  },
+  {
+    "id": "p5",
+    "title": "Retrieval augmented clinical assistants",
+    "text": "Grounding answers in cited abstracts improves trust; latency budgets matter for bedside workflows."
+  }
+]

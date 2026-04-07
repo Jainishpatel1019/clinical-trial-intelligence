@@ -1,0 +1,266 @@
+{
+  "preprocessing": {
+    "n_rows_final": 671,
+    "overlap": {
+      "propensity_min": 0.01506649820444679,
+      "propensity_max": 0.5963909472802351,
+      "trim_low": 0.0427845309857727,
+      "trim_high": 0.42633199293999624,
+      "n_before": 747,
+      "n_after": 671,
+      "pct_trimmed": 10.174029451137885
+    },
+    "smd_top5_before_trim": {
+      "x9": 0.39383200285843645,
+      "x25": 0.3575708802576384,
+      "x23": 0.3357431190574728,
+      "x24": 0.2917246977684016,
+      "x4": 0.28161723984285547
+    },
+    "smd_top5_after_ps_match": {
+      "x16": 0.24636938744902437,
+      "x14": 0.20083113953179163,
+      "x10": 0.1883407026313402,
+      "x3": 0.18541242266859273,
+      "x4": 0.15484788515336767
+    },
+    "max_smd_after_match": 0.24636938744902437,
+    "missingness_rate_per_feature": {
+      "x0": 0.0,
+      "x1": 0.0,
+      "x2": 0.0,
+      "x3": 0.0,
+      "x4": 0.0,
+      "x5": 0.0,
+      "x6": 0.0,
+      "x7": 0.0,
+      "x8": 0.0,
+      "x9": 0.0,
+      "x10": 0.0,
+      "x11": 0.0,
+      "x12": 0.0,
+      "x13": 0.0,
+      "x14": 0.0,
+      "x15": 0.0,
+      "x16": 0.0,
+      "x17": 0.0,
+      "x18": 0.0,
+      "x19": 0.0,
+      "x20": 0.0,
+      "x21": 0.0,
+      "x22": 0.0,
+      "x23": 0.0,
+      "x24": 0.0,
+      "x25": 0.0
+    },
+    "feature_cols": [
+      "x0",
+      "x1",
+      "x2",
+      "x3",
+      "x4",
+      "x5",
+      "x6",
+      "x7",
+      "x8",
+      "x9",
+      "x10",
+      "x11",
+      "x12",
+      "x13",
+      "x14",
+      "x15",
+      "x16",
+      "x17",
+      "x18",
+      "x19",
+      "x20",
+      "x21",
+      "x22",
+      "x23",
+      "x24",
+      "x25"
+    ]
+  },
+  "causal_eval": {
+    "n_train": 597,
+    "n_test": 150,
+    "pehe": 1.282815873019144,
+    "auuc_normalized": 1.5043524535275914,
+    "qini_coefficient": 2.9047827813403715,
+    "policy_tree_depth": 3,
+    "policy_tree_export": "|--- x1 <= -0.22\n|   |--- x1 <= -0.75\n|   |   |--- x1 <= -1.29\n|   |   |   |--- value: [7.27]\n|   |   |--- x1 >  -1.29\n|   |   |   |--- value: [6.43]\n|   |--- x1 >  -0.75\n|   |   |--- x1 <= -0.34\n|   |   |   |--- value: [5.74]\n|   |   |--- x1 >  -0.34\n|   |   |   |--- value: [4.97]\n|--- x1 >  -0.22\n|   |--- x1 <= 0.85\n|   |   |--- x1 <= 0.09\n|   |   |   |--- value: [4.45]\n|   |   |--- x1 >  0.09\n|   |   |   |--- value: [3.61]\n|   |--- x1 >  0.85\n|   |   |--- x9 <= 0.50\n|   |   |   |--- value: [2.27]\n|   |   |--- x9 >  0.50\n|   |   |   |--- value: [1.51]\n",
+    "targeting": {
+      "top_fraction": 0.3,
+      "model_capture_rate_of_true_top": 0.9111111111111111,
+      "random_baseline_capture_rate_mean": 0.29966666666666664,
+      "lift_vs_random": 3.0404152660868604
+    }
+  },
+  "bandit_simulation": {
+    "n_simulations": 200,
+    "horizon": 800,
+    "true_arm_success_probs": [
+      0.42,
+      0.48,
+      0.61
+    ],
+    "optimal_arm_index": 2,
+    "cost_per_patient_usd": 8000.0,
+    "summary_by_policy": {
+      "equal": {
+        "mean_cumulative_regret": 85.4399999999996,
+        "mean_inferior_exposure_pct": 66.75,
+        "mean_steps_to_confidence": 239.465
+      },
+      "epsilon_greedy": {
+        "mean_cumulative_regret": 28.62209999999993,
+        "mean_inferior_exposure_pct": 22.84125,
+        "mean_steps_to_confidence": 418.045
+      },
+      "thompson": {
+        "mean_cumulative_regret": 16.887200000000004,
+        "mean_inferior_exposure_pct": 13.975,
+        "mean_steps_to_confidence": 255.65
+      }
+    },
+    "thompson_vs_equal_regret_reduction_pct": 80.235018726823,
+    "thompson_vs_equal_inferior_exposure_reduction_pct": 79.06367041229868,
+    "estimated_patients_saved_to_confidence_proxy": 0.0,
+    "inferior_arm_assignments_avoided_per_horizon_mean": 422.2,
+    "patient_equivalent_avoided_proxy": 140.73333333333332,
+    "estimated_cost_saving_usd_proxy": 1125866.6666666665
+  },
+  "drift_simulation": {
+    "psi_top10_features": {
+      "x0": 5.4852406774278215,
+      "x1": 0.183583288934803,
+      "x2": 0.28810809816509514,
+      "x3": 0.30424255807131667,
+      "x4": 0.027859320594835195,
+      "x5": 0.04191295012918893,
+      "x6": 0.04472617481580188,
+      "x7": 0.00024998972943318795,
+      "x8": 0.0007098675330395249,
+      "x9": 0.002641271517766222
+    },
+    "max_psi_top10": 5.4852406774278215,
+    "alert_level": "critical",
+    "thresholds": {
+      "warning": 0.1,
+      "critical": 0.2
+    },
+    "alert_latency_seconds_synthetic": 2.50060111284256e-07,
+    "evidently_report_available": false,
+    "note": "Latency is in-process compute time for PSI/Evidently on this benchmark slice, not a streaming SLA."
+  },
+  "rag_eval": {
+    "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+    "corpus_docs": 5,
+    "retrieval_latency_ms_p50": 10.789000079967082,
+    "retrieval_latency_ms_p95": 25.07733573438599,
+    "ragas": {
+      "faithfulness": null,
+      "answer_relevancy": null,
+      "context_precision": null,
+      "context_recall": null,
+      "note": "Install requirements-evaluation.txt and set OPENAI_API_KEY (or compatible) to run RAGAS; not required for CI.",
+      "error": "No module named 'datasets'"
+    }
+  },
+  "load_test": {
+    "in_process": {
+      "mode": "in_process_threadpool",
+      "n_workers": 50,
+      "batch_size": 100,
+      "total_batches": 1000,
+      "p50_ms": 0.014208024367690086,
+      "p95_ms": 0.019832991529256105,
+      "peak_batch_rows_observed": 100,
+      "note": "Uses the same linear stub as bench_server for apples-to-apples CPU scoring."
+    },
+    "memory_probe": {
+      "tracemalloc_current_bytes": 21512,
+      "tracemalloc_peak_bytes": 54736
+    }
+  },
+  "results_summary_table": [
+    {
+      "component": "HTE model (IHDP)",
+      "metric": "PEHE (RMSE of ITE)",
+      "value": 1.2828,
+      "baseline": "-",
+      "delta": "-"
+    },
+    {
+      "component": "HTE model (IHDP)",
+      "metric": "AUUC (normalized uplift curve)",
+      "value": 1.504,
+      "baseline": "0 (random ranking)",
+      "delta": "higher is better"
+    },
+    {
+      "component": "HTE model (IHDP)",
+      "metric": "Qini coefficient (ranking summary)",
+      "value": 2.905,
+      "baseline": "-",
+      "delta": "-"
+    },
+    {
+      "component": "HTE policy (rank top 30%)",
+      "metric": "Capture rate of true top 30% ITE",
+      "value": "91.1%",
+      "baseline": "30.0% (random 30% policy)",
+      "delta": "3.04x vs random"
+    },
+    {
+      "component": "Adaptive allocation (sim)",
+      "metric": "Mean % patient-visits on non-optimal arm",
+      "value": "14.0%",
+      "baseline": "66.8% (equal rotation)",
+      "delta": "79.1% relative reduction vs equal"
+    },
+    {
+      "component": "Adaptive allocation (sim)",
+      "metric": "Estimated cost proxy (patient-equiv. x $8k)",
+      "value": "$1,125,867",
+      "baseline": "$0",
+      "delta": "140.7 patient-equivalent slots avoided / horizon (assignments / arms)"
+    },
+    {
+      "component": "RAG retrieval (mini corpus)",
+      "metric": "Faithfulness (RAGAS)",
+      "value": "n/a (install eval extras + API)",
+      "baseline": "-",
+      "delta": "-"
+    },
+    {
+      "component": "RAG retrieval (mini corpus)",
+      "metric": "p95 latency (encode + FAISS)",
+      "value": "25.1ms",
+      "baseline": "-",
+      "delta": "-"
+    },
+    {
+      "component": "Drift monitor (PSI demo)",
+      "metric": "Max PSI (top-10 features, shifted slice)",
+      "value": 5.4852,
+      "baseline": "<0.1 stable",
+      "delta": "critical"
+    },
+    {
+      "component": "Drift monitor",
+      "metric": "Alert compute latency (in-process)",
+      "value": "0.00ms",
+      "baseline": "-",
+      "delta": "not streaming SLA"
+    },
+    {
+      "component": "Load (in-process stub)",
+      "metric": "p95 batch scoring (100 patients)",
+      "value": "0.02ms",
+      "baseline": "-",
+      "delta": "50 concurrent workers"
+    }
+  ]
+}

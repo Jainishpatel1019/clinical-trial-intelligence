@@ -26,6 +26,11 @@ jobs:
       - name: Run tests with coverage
         run: pytest tests/ -v --tb=short --cov=src --cov-report=term-missing
 
+      - name: Evaluation stack (fast, skip RAG model download)
+        env:
+          EVAL_SKIP_RAG: "1"
+        run: python evaluation/run_all.py --fast --out /tmp/eval_summary.json
+
       - name: Check core imports
         run: |
           python -c "from src.data.schema import get_connection; print('schema OK')"
